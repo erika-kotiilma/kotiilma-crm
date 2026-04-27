@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koti-ilma CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #2ec4b6;
+  --teal-dim: rgba(46,196,182,0.15);
+  --navy: #1b2a4a;
+  --bg: #0d1520;
+  --surface: #131f30;
+  --surface2: #1a2b40;
+  --surface3: #203450;
+  --border: rgba(46,196,182,0.12);
+  --border2: rgba(255,255,255,0.06);
+  --text: #ddeeff;
+  --muted: #6a8099;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --radius: 14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* GRID BG */
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,196,182,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(46,196,182,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+
+.app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ── HEADER ── */
+header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px;letter-spacing:-0.5px}
+.logo-mark{width:30px;height:30px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:var(--navy)}
+.logo-sub{color:var(--muted);font-weight:400;font-size:14px;margin-left:2px}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.pulse-badge{display:flex;align-items:center;gap:5px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);color:var(--green);padding:4px 11px;border-radius:20px;font-size:11px;font-weight:600}
+.pulse{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.4)}}
+.btn-new{background:var(--teal);color:var(--navy);border:none;padding:7px 16px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
+.btn-new:hover{background:#25a99d;transform:translateY(-1px)}
+
+/* ── SIDEBAR + MAIN LAYOUT ── */
+.layout{display:flex;flex:1}
+.sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:20px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--teal-dim);color:var(--teal);font-weight:600}
+.nav-item .nav-icon{font-size:15px;width:20px;text-align:center}
+.nav-badge{margin-left:auto;background:var(--surface3);border-radius:8px;padding:1px 7px;font-size:10px;font-weight:600}
+.nav-item.active .nav-badge{background:rgba(46,196,182,0.2);color:var(--teal)}
+.sidebar-section{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:14px 12px 6px;font-weight:600}
+.sidebar-divider{border:none;border-top:1px solid var(--border2);margin:8px 0}
+
+.content{flex:1;padding:28px;overflow-y:auto;max-width:1400px}
+
+/* ── STATS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;position:relative;overflow:hidden;transition:transform .2s}
+.stat:hover{transform:translateY(-2px)}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c,var(--teal))}
+.stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.stat-val{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--c,var(--teal))}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.stat-trend{color:var(--green);font-weight:600}
+
+/* ── SETUP BANNER ── */
+.setup-banner{background:linear-gradient(135deg,rgba(46,196,182,0.08),rgba(27,42,74,0.4));border:1px solid rgba(46,196,182,0.25);border-radius:var(--radius);padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.setup-icon{font-size:28px;flex-shrink:0}
+.setup-text{flex:1;min-width:200px}
+.setup-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
+.setup-sub{font-size:12px;color:var(--muted);line-height:1.5}
+.setup-steps{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.setup-step{display:flex;align-items:center;gap:6px;font-size:12px;padding:5px 12px;border-radius:20px;border:1px solid var(--border)}
+.setup-step.done{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3);color:var(--green)}
+.setup-step.pending{background:var(--surface2);color:var(--muted)}
+.setup-step.active{background:rgba(46,196,182,0.08);border-color:rgba(46,196,182,0.3);color:var(--teal)}
+
+/* ── PIPELINE ── */
+.pipeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.pipeline-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700}
+.pipeline-actions{display:flex;gap:8px}
+.btn-sm{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.btn-sm:hover{border-color:var(--teal);color:var(--teal)}
+
+.pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.col{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
+.col-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.col-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px}
+.col-dot{width:8px;height:8px;border-radius:50%}
+.col-cnt{font-size:11px;color:var(--muted);background:var(--bg);padding:2px 8px;border-radius:6px}
+.col-body{padding:10px;flex:1;min-height:280px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:60vh}
+
+/* ── LEAD CARD ── */
+.card{background:var(--bg);border:1px solid var(--border2);border-radius:11px;padding:13px 15px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;animation:popIn .25s ease}
+@keyframes popIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cc,var(--teal))}
+.card:hover{border-color:rgba(46,196,182,0.3);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.3)}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px}
+.card-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700}
+.score-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:5px}
+.s-hot{background:rgba(34,197,94,0.12);color:var(--green)}
+.s-warm{background:rgba(245,158,11,0.12);color:var(--amber)}
+.s-cold{background:rgba(239,68,68,0.1);color:#f87171}
+.card-info{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:2px}
+.card-row{display:flex;align-items:center;gap:5px}
+.card-problem{font-size:11px;color:var(--muted);background:var(--surface2);border-radius:5px;padding:4px 8px;margin-top:6px;border-left:2px solid var(--cc,var(--teal));line-height:1.4}
+.ai-tag{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--teal);background:rgba(46,196,182,0.07);border:1px solid rgba(46,196,182,0.18);padding:2px 7px;border-radius:4px;margin-top:5px}
+.card-btns{display:flex;gap:5px;margin-top:9px;padding-top:9px;border-top:1px solid var(--border2)}
+.cbtn{flex:1;padding:5px 0;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;transition:all .15s;font-family:'DM Sans',sans-serif;font-weight:500}
+.cbtn:hover{border-color:var(--teal);color:var(--teal);background:rgba(46,196,182,0.04)}
+.cbtn.call{background:rgba(34,197,94,0.08);color:var(--green);border-color:rgba(34,197,94,0.25)}
+.cbtn.call:hover{background:rgba(34,197,94,0.15)}
+.card-time{font-size:9px;color:var(--muted);text-align:right;margin-top:4px}
+.sms-sent{display:inline-flex;align-items:center;gap:3px;font-size:9px;color:var(--green);margin-top:3px}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:40px 16px;color:var(--muted)}
+.empty-ico{font-size:28px;margin-bottom:8px}
+.empty-txt{font-size:12px;line-height:1.6}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(5px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:580px;max-height:92vh;overflow-y:auto;transform:scale(.96);transition:transform .2s}
+.overlay.open .modal{transform:scale(1)}
+.modal-head{padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-ttl{font-family:'Syne',sans-serif;font-size:17px;font-weight:700}
+.modal-close{width:30px;height:30px;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.modal-close:hover{border-color:var(--teal);color:var(--text)}
+.modal-body{padding:22px 26px}
+.modal-foot{padding:14px 26px 22px;display:flex;gap:8px;justify-content:flex-end}
+
+/* ── FORM ── */
+.fg{margin-bottom:14px}
+.fl{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.fi,.fs,.ft{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--teal)}
+.fs option{background:var(--surface)}
+.ft{min-height:72px;resize:vertical}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ── AI PANEL ── */
+.ai-box{background:var(--bg);border:1px solid rgba(46,196,182,0.2);border-radius:11px;padding:14px;margin-bottom:14px}
+.ai-box-ttl{font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.spin{width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-thinking{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.cat-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:7px;font-size:11px;font-weight:700;margin-bottom:7px}
+.ai-text{font-size:12px;line-height:1.65;color:var(--text)}
+.ai-msg-preview{background:var(--surface2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.6;border-left:2px solid var(--teal);color:var(--muted)}
+.ai-msg-lbl{font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+
+/* ── BUTTONS ── */
+.btn-p{padding:9px 22px;border-radius:10px;border:none;background:var(--teal);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
+.btn-p:hover{background:#25a99d}
+.btn-p:disabled{opacity:.4;cursor:not-allowed}
+.btn-s{padding:9px 18px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s}
+.btn-s:hover{border-color:var(--teal);color:var(--text)}
+
+/* ── DETAIL ── */
+.dsec{margin-bottom:18px}
+.dsec-ttl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding-bottom:7px;border-bottom:1px solid var(--border2);margin-bottom:10px;font-weight:600}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.di-lbl{font-size:10px;color:var(--muted);margin-bottom:2px}
+.di-val{font-size:13px;font-weight:500}
+.msg-bubble{background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:11px 13px;font-size:12px;line-height:1.65;margin-bottom:7px}
+.msg-bubble.out{background:rgba(46,196,182,0.06);border-color:rgba(46,196,182,0.18)}
+.msg-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;color:var(--muted)}
+.msg-lbl.out{color:var(--teal)}
+.cat-btns{display:flex;gap:7px}
+.cat-btn{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .15s;color:var(--muted);font-weight:500}
+.cat-btn.g{border-color:rgba(34,197,94,0.3);color:var(--green)}
+.cat-btn.g:hover{background:rgba(34,197,94,0.1)}
+.cat-btn.a{border-color:rgba(245,158,11,0.3);color:var(--amber)}
+.cat-btn.a:hover{background:rgba(245,158,11,0.1)}
+.cat-btn.r{border-color:rgba(239,68,68,0.2);color:#f87171}
+.cat-btn.r:hover{background:rgba(239,68,68,0.1)}
+
+/* ── SETTINGS VIEW ── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+.settings-card-ttl{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.key-row{display:flex;gap:8px;align-items:center}
+.key-input{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-family:monospace;font-size:12px;outline:none}
+.key-input:focus{border-color:var(--teal)}
+.key-test{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:11px;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'DM Sans',sans-serif}
+.key-test:hover{border-color:var(--teal);color:var(--teal)}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.status-row{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:6px}
+
+.seq-item{background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px}
+.seq-time{font-size:10px;font-weight:700;color:var(--teal);min-width:36px;margin-top:1px}
+.seq-text{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* ── WEBHOOK VIEW ── */
+.webhook-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+.webhook-card-ttl{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.url-box{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 14px;font-family:monospace;font-size:12px;color:var(--teal);word-break:break-all;line-height:1.5;margin-bottom:8px}
+.copy-btn{padding:7px 16px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+.copy-btn:hover{border-color:var(--teal);color:var(--teal)}
+.step-list{counter-reset:steps;display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:12px;align-items:flex-start;counter-increment:steps}
+.step-num{width:22px;height:22px;border-radius:50%;background:var(--teal-dim);border:1px solid rgba(46,196,182,0.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--teal);flex-shrink:0;margin-top:1px}
+.step-content{font-size:12px;color:var(--muted);line-height:1.6}
+.step-content strong{color:var(--text)}
+.hint-box{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:9px;padding:12px 15px;font-size:12px;color:var(--amber);line-height:1.6;margin-top:12px}
+
+/* ── MESSAGES VIEW ── */
+.msg-log-item{padding:14px 0;border-bottom:1px solid var(--border2)}
+.msg-log-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.msg-log-name{font-size:13px;font-weight:600}
+.msg-log-time{font-size:10px;color:var(--muted)}
+.msg-type-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px}
+.mt-sms{background:rgba(46,196,182,0.1);color:var(--teal)}
+.mt-email{background:rgba(99,102,241,0.1);color:#818cf8}
+.mt-ai{background:rgba(245,158,11,0.1);color:var(--amber)}
+.msg-log-text{font-size:12px;color:var(--muted);line-height:1.55;background:var(--bg);border-radius:7px;padding:9px 11px;margin-top:5px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;z-index:999;transform:translateY(70px);opacity:0;transition:all .3s;max-width:320px;box-shadow:0 16px 40px rgba(0,0,0,0.4)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast-icon{font-size:16px}
+.toast-body{}
+.toast-ttl{font-size:13px;font-weight:600}
+.toast-sub{font-size:11px;color:var(--muted)}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .pipeline{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .settings-grid{grid-template-columns:1fr}
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">K</div>
+    Koti-ilma
+    <span class="logo-sub">CRM</span>
+  </div>
+  <div class="hdr-right">
+    <div class="pulse-badge"><div class="pulse"></div>Live</div>
+    <button class="btn-new" onclick="openAdd()">+ Uusi liidi</button>
+  </div>
+</header>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">Näkymät</div>
+    <button class="nav-item active" onclick="showView('pipeline',this)">
+      <span class="nav-icon">📊</span> Pipeline
+      <span class="nav-badge" id="nb-pipeline">0</span>
+    </button>
+    <button class="nav-item" onclick="showView('messages',this)">
+      <span class="nav-icon">✉️</span> Viestit
+      <span class="nav-badge" id="nb-messages">0</span>
+    </button>
+    <hr class="sidebar-divider">
+    <div class="sidebar-section">Asetukset</div>
+    <button class="nav-item" onclick="showView('webhook',this)">
+      <span class="nav-icon">🔗</span> Meta Webhook
+    </button>
+    <button class="nav-item" onclick="showView('settings',this)">
+      <span class="nav-icon">⚙️</span> Agentti
+    </button>
+    <hr class="sidebar-divider">
+    <div style="padding:12px;font-size:11px;color:var(--muted);line-height:1.6">
+      <div style="font-weight:600;color:var(--text);margin-bottom:4px">📞 Soittojärjestys</div>
+      Soita ensin 🟡 Lähellä-kategorialle — ne ovat valmiimpia kuin luuletkaan.
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── PIPELINE VIEW ── -->
+    <div id="view-pipeline">
+
+      <!-- Setup banner -->
+      <div class="setup-banner" id="setup-banner">
+        <div class="setup-icon">🚀</div>
+        <div class="setup-text">
+          <div class="setup-title">Järjestelmä odottaa käyttöönottoa</div>
+          <div class="setup-sub">Käy läpi kolme vaihetta jotta Meta-liidit alkavat tulla automaattisesti ja AI-viestit lähtevät.</div>
+          <div class="setup-steps">
+            <div class="setup-step active" id="step1">⚡ 1. API-avaimet</div>
+            <div class="setup-step pending" id="step2">🔗 2. Meta Webhook</div>
+            <div class="setup-step pending" id="step3">✅ 3. Testaa</div>
+          </div>
+        </div>
+        <button class="btn-sm" onclick="showView('settings',document.querySelector(\'.nav-item:nth-child(5)\'))">Aloita asetukset →</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat" style="--c:var(--green)">
+          <div class="stat-lbl">🟢 Kaupat</div>
+          <div class="stat-val" id="s-hot">0</div>
+          <div class="stat-sub"><span class="stat-trend" id="s-conv">0%</span> konversio</div>
+        </div>
+        <div class="stat" style="--c:var(--amber)">
+          <div class="stat-lbl">🟡 Soita nyt</div>
+          <div class="stat-val" id="s-warm">0</div>
+          <div class="stat-sub">lähellä kauppaa</div>
+        </div>
+        <div class="stat" style="--c:#f87171">
+          <div class="stat-lbl">🔴 Ripuli</div>
+          <div class="stat-val" id="s-cold">0</div>
+          <div class="stat-sub">älä tuhlaa aikaa</div>
+        </div>
+        <div class="stat" style="--c:var(--teal)">
+          <div class="stat-lbl">📨 SMS lähetetty</div>
+          <div class="stat-val" id="s-sms">0</div>
+          <div class="stat-sub">automaattisesti</div>
+        </div>
+      </div>
+
+      <!-- Pipeline columns -->
+      <div class="pipeline-header">
+        <div class="pipeline-title">Pipeline</div>
+        <div class="pipeline-actions">
+          <button class="btn-sm" onclick="loadDemo()">📋 Lataa demo</button>
+          <button class="btn-sm" onclick="clearAll()">🗑️ Tyhjennä</button>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="col">
+          <div class="col-head">
+            <div class="col-title"><div class="col-dot" style="background:var(--green)"></div>🟢 Kaupat</div>
+            <div class="col-cnt" id="cc-hot">0</div>
+          </div>
+          <div class="col-body" id="col-hot"></div>
+        </div>
+        <div class="col">
+          <div class="col-head">
+            <div class="col-title"><div class="col-dot" style="background:var(--amber)"></div>🟡 Lähellä kauppaa</div>
+            <div class="col-cnt" id="cc-warm">0</div>
+          </div>
+          <div class="col-body" id="col-warm"></div>
+        </div>
+        <div class="col">
+          <div class="col-head">
+            <div class="col-title"><div class="col-dot" style="background:var(--red)"></div>🔴 Ripuli</div>
+            <div class="col-cnt" id="cc-cold">0</div>
+          </div>
+          <div class="col-body" id="col-cold"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MESSAGES VIEW ── -->
+    <div id="view-messages" style="display:none">
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Lähetetyt viestit</div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px" id="msg-log">
+        <div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.<br>AI lähettää viestit automaattisesti kun liidi tulee.</div></div>
+      </div>
+    </div>
+
+    <!-- ── WEBHOOK VIEW ── -->
+    <div id="view-webhook" style="display:none">
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Meta Webhook — Yhdistä mainokset</div>
+
+      <div class="webhook-card">
+        <div class="webhook-card-ttl">🔗 Webhook URL</div>
+        <div class="url-box" id="wh-url">Generoidaan...</div>
+        <button class="copy-btn" onclick="copyUrl()">📋 Kopioi URL</button>
+        <div class="hint-box" style="margin-top:12px">
+          ⚠️ Tämä URL toimii vain kun sinulla on palvelin. Katso alla ohjeet miten julkaistaan ilmaiseksi.
+        </div>
+      </div>
+
+      <div class="webhook-card">
+        <div class="webhook-card-ttl">📋 Ohjeet askel askeleelta</div>
+        <div class="step-list">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content"><strong>Avaa Meta Business Manager</strong> → Mainostilit → valitse mainostilisi</div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content"><strong>Luo uusi kampanja</strong> → Tavoite: Liidien generointi → Lead Gen -lomake</div>
+          </div>
+          <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content"><strong>Lomakeasetukset</strong> → Webhooks → "Lisää webhook" → liitä URL yllä olevasta kentästä</div>
+          </div>
+          <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content"><strong>Kentät lomakkeeseen:</strong> Etunimi, Sukunimi, Puhelin, Sähköposti, Paikkakunta, "Mikä on kotisi ongelma?"</div>
+          </div>
+          <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content"><strong>Julkaise mainos</strong> → testaa täyttämällä lomake → liidi ilmestyy dashboardiin automaattisesti</div>
+          </div>
+        </div>
+        <div class="hint-box">
+          💡 <strong>Ilmainen julkaisu:</strong> Mene osoitteeseen <strong>render.com</strong> tai <strong>railway.app</strong> → luo ilmainen tili → lataa tämä tiedosto → saat oikean URL:n webhookille. Ohje löytyy YouTubesta hakusanalla "deploy html to render free".
+        </div>
+      </div>
+
+      <div class="webhook-card">
+        <div class="webhook-card-ttl">🧪 Testaa manuaalisesti</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Simuloi Meta-liidi — testaa koko putki ilman oikeaa mainosta</div>
+        <div class="fr">
+          <div class="fg"><label class="fl">Etunimi</label><input class="fi" id="t-fn" value="Testiliidi" /></div>
+          <div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="t-ln" value="Virtanen" /></div>
+          <div class="fg"><label class="fl">Puhelin</label><input class="fi" id="t-ph" value="040 000 0000" /></div>
+          <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="t-ci" value="Oulu" /></div>
+        </div>
+        <div class="fg"><label class="fl">Ongelma</label><input class="fi" id="t-pr" value="Tunkkainen ilma ja yöllinen yskiminen" /></div>
+        <button class="btn-p" style="margin-top:4px" onclick="testWebhook()">⚡ Lähetä testiliidi</button>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS VIEW ── -->
+    <div id="view-settings" style="display:none">
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Agentti & API-asetukset</div>
+
+      <div class="settings-grid">
+
+        <div class="settings-card">
+          <div class="settings-card-ttl">🤖 Anthropic (AI)</div>
+          <div class="fg">
+            <label class="fl">API-avain</label>
+            <div class="key-row">
+              <input class="key-input" id="key-anthropic" type="password" placeholder="sk-ant-..." />
+              <button class="key-test" onclick="testAnthropic()">Testaa</button>
+            </div>
+            <div class="status-row"><div class="status-dot" id="dot-anthropic" style="background:var(--muted)"></div><span id="status-anthropic">Ei testattu</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6">
+            Hanki avain: <a href="https://console.anthropic.com" target="_blank" style="color:var(--teal)">console.anthropic.com</a><br>
+            Hinta: ~5€/kk normaalikäytöllä
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-ttl">📱 Twilio (SMS)</div>
+          <div class="fg">
+            <label class="fl">Account SID</label>
+            <input class="fi" id="key-twilio-sid" placeholder="AC..." />
+          </div>
+          <div class="fg">
+            <label class="fl">Auth Token</label>
+            <input class="fi" id="key-twilio-token" type="password" placeholder="..." />
+          </div>
+          <div class="fg">
+            <label class="fl">Twilio-numero (lähettäjä)</label>
+            <input class="fi" id="key-twilio-from" placeholder="+358..." />
+          </div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6">
+            Hanki tili: <a href="https://twilio.com" target="_blank" style="color:var(--teal)">twilio.com</a> — ilmainen trial<br>
+            Hinta: ~0,08€/SMS
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-ttl">📧 Sähköposti (varmuus)</div>
+          <div class="fg">
+            <label class="fl">Lähettäjän sähköposti</label>
+            <input class="fi" id="key-email-from" placeholder="info@kotiilma.fi" />
+          </div>
+          <div class="fg">
+            <label class="fl">SendGrid API-avain (ilmainen)</label>
+            <input class="fi" id="key-sendgrid" type="password" placeholder="SG...." />
+          </div>
+          <div style="font-size:11px;color:var(--muted);line-height:1.6">
+            Hanki avain: <a href="https://sendgrid.com" target="_blank" style="color:var(--teal)">sendgrid.com</a> — 100 viestiä/pv ilmaiseksi
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="settings-card-ttl">🏢 Yritystiedot</div>
+          <div class="fg"><label class="fl">Myyjän nimi</label><input class="fi" id="cfg-sender" value="Henri" /></div>
+          <div class="fg"><label class="fl">Puhelin (viesteihin)</label><input class="fi" id="cfg-phone" value="010 200 7561" /></div>
+          <div class="fg"><label class="fl">Viestistrategia</label>
+            <select class="fs" id="cfg-strategy">
+              <option value="aggressive">Aggressiivinen (3 viestiä 72h)</option>
+              <option value="gentle" selected>Lempeä (2 viestiä 5pv)</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sequence preview -->
+      <div class="settings-card" style="margin-top:20px">
+        <div class="settings-card-ttl">⏱️ Viestisekvenssi</div>
+        <div class="seq-item"><div class="seq-time">0 min</div><div class="seq-text">📱 <strong>SMS</strong> — tervetuloa-viesti, personoitu nimellä ja ongelmalla. Kertoo seuraavan askeleen.</div></div>
+        <div class="seq-item"><div class="seq-time">5 min</div><div class="seq-text">📧 <strong>Sähköposti</strong> — varmuuskopio jos SMS ei mene läpi. Sama sisältö laajennettuna.</div></div>
+        <div class="seq-item"><div class="seq-time">24h</div><div class="seq-text">📱 <strong>SMS</strong> — kvalifiointiviesti. AI kysyy talon tiedot jos puuttuvat. Alustava hintaluokka.</div></div>
+        <div class="seq-item"><div class="seq-time">5pv</div><div class="seq-text">📱 <strong>SMS</strong> — muistutus (vain jos ei vastattu). Kevyt, ei aggressiivinen.</div></div>
+      </div>
+
+      <div style="margin-top:20px;display:flex;gap:10px">
+        <button class="btn-p" onclick="saveSettings()">💾 Tallenna asetukset</button>
+        <button class="btn-s" onclick="testFullPipeline()">🧪 Testaa koko putki</button>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- ADD MODAL -->
+<div class="overlay" id="modal-add">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-ttl">Lisää liidi</div>
+      <button class="modal-close" onclick="closeM('modal-add')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="ai-box" id="ai-box" style="display:none">
+        <div class="ai-box-ttl"><div class="spin" id="ai-spin"></div> AI Kvalifiointi</div>
+        <div id="ai-result"></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="f-fn" placeholder="Matti" /></div>
+        <div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="f-ln" placeholder="Virtanen" /></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="f-ph" placeholder="040 123 4567" /></div>
+        <div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="f-em" placeholder="matti@email.fi" /></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="f-ci" placeholder="Oulu" /></div>
+        <div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="f-yr" placeholder="1985" type="number" /></div>
+      </div>
+      <div class="fg">
+        <label class="fl">Nykyinen ilmanvaihto</label>
+        <select class="fs" id="f-hv">
+          <option value="">Ei tietoa</option>
+          <option value="painovoimainen">Painovoimainen</option>
+          <option value="huippuimuri">Huippuimuri</option>
+          <option value="koneellinen">Koneellinen poisto</option>
+          <option value="lto">LTO jo olemassa</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Ongelma / Syy</label><textarea class="ft" id="f-pr" placeholder="Tunkkaisuus, yskiminen, korkeat laskut..."></textarea></div>
+      <div class="fg">
+        <label class="fl">Lähde</label>
+        <select class="fs" id="f-src">
+          <option value="meta">Meta / Facebook</option>
+          <option value="google">Google</option>
+          <option value="suositus">Suositus</option>
+          <option value="soitto">Soitto</option>
+          <option value="muu">Muu</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-s" onclick="closeM('modal-add')">Peruuta</button>
+      <button class="btn-p" id="btn-save" onclick="saveLead()">
+        <div class="spin" id="save-spin" style="display:none;border-top-color:var(--navy)"></div>
+        🤖 Tallenna & AI Kvalifioi
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-ttl" id="d-ttl">Liidi</div>
+      <button class="modal-close" onclick="closeM('modal-detail')">×</button>
+    </div>
+    <div class="modal-body" id="d-body"></div>
+    <div class="modal-foot">
+      <button class="btn-s" onclick="closeM('modal-detail')">Sulje</button>
+      <button class="btn-p" id="d-call">📞 Soita</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="t-ico">✅</div>
+  <div class="toast-body">
+    <div class="toast-ttl" id="t-ttl"></div>
+    <div class="toast-sub" id="t-sub"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let leads = JSON.parse(localStorage.getItem('ki-leads') || '[]');
+let msgLog = JSON.parse(localStorage.getItem('ki-msgs') || '[]');
+let cfg = JSON.parse(localStorage.getItem('ki-cfg') || JSON.stringify({
+  sender:'Henri', phone:'010 200 7561', strategy:'gentle',
+  anthropicKey:'', twilioSid:'', twilioToken:'', twilioFrom:'',
+  emailFrom:'', sendgridKey:''
+}));
+
+// Webhook ID
+const whId = localStorage.getItem('ki-wh') || Math.random().toString(36).substr(2,10);
+localStorage.setItem('ki-wh', whId);
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+function init() {
+  document.getElementById('wh-url').textContent = `${location.href.split('?')[0]}?wh=${whId}&lead=`;
+  loadSettings();
+  render();
+  checkIncoming();
+  if (leads.length === 0) setTimeout(loadDemo, 400);
+}
+
+function checkIncoming() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('wh') === whId && p.get('lead')) {
+    try {
+      const d = JSON.parse(decodeURIComponent(p.get('lead')));
+      if (d.firstname) processIncoming(d);
+      history.replaceState({}, '', location.pathname);
+    } catch(e){}
+  }
+}
+
+async function processIncoming(d) {
+  const lead = {
+    id: Date.now(), ...d,
+    category:'warm', score:5, aiQualified:false,
+    createdAt: new Date().toISOString(), smsSent:false
+  };
+  leads.push(lead);
+  save();
+  toast('📥','Uusi liidi!', `${lead.firstname} ${lead.lastname} — Meta`);
+  const result = await qualify(lead);
+  applyAI(lead, result);
+  await sendMessages(lead);
+  render();
+}
+
+// ═══════════════════════════════════════════
+// VIEWS
+// ═══════════════════════════════════════════
+function showView(name, el) {
+  ['pipeline','messages','webhook','settings'].forEach(v => {
+    document.getElementById('view-'+v).style.display = v===name?'block':'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  if(name==='messages') renderMessages();
+}
+
+// ═══════════════════════════════════════════
+// RENDER PIPELINE
+// ═══════════════════════════════════════════
+function render() {
+  const cats = {hot:[], warm:[], cold:[]};
+  leads.forEach(l => { if(cats[l.category]) cats[l.category].push(l); });
+
+  renderCol('col-hot', cats.hot, 'hot');
+  renderCol('col-warm', cats.warm, 'warm');
+  renderCol('col-cold', cats.cold, 'cold');
+
+  document.getElementById('cc-hot').textContent = cats.hot.length;
+  document.getElementById('cc-warm').textContent = cats.warm.length;
+  document.getElementById('cc-cold').textContent = cats.cold.length;
+  document.getElementById('nb-pipeline').textContent = leads.length;
+
+  const total = leads.length;
+  const hot = cats.hot.length;
+  document.getElementById('s-hot').textContent = hot;
+  document.getElementById('s-warm').textContent = cats.warm.length;
+  document.getElementById('s-cold').textContent = cats.cold.length;
+  document.getElementById('s-conv').textContent = total>0 ? Math.round(hot/total*100)+'%' : '0%';
+  document.getElementById('s-sms').textContent = leads.filter(l=>l.smsSent).length;
+  document.getElementById('nb-messages').textContent = msgLog.length;
+}
+
+const CC = {hot:'var(--green)', warm:'var(--amber)', cold:'#f87171'};
+const SP = {hot:'s-hot', warm:'s-warm', cold:'s-cold'};
+
+function renderCol(id, items, cat) {
+  const el = document.getElementById(id);
+  const empties = {hot:'🎯 Ei kauppoja vielä.<br>Lisää ensimmäinen liidi!', warm:'📞 Soita näille perään.', cold:'🗑️ Ei huonoja liidejä!<br>Hyvä merkki.'};
+  if (!items.length) { el.innerHTML = `<div class="empty"><div class="empty-ico">${cat==='hot'?'🎯':cat==='warm'?'📞':'🗑️'}</div><div class="empty-txt">${empties[cat]}</div></div>`; return; }
+  el.innerHTML = items.sort((a,b)=>b.score-a.score).map(l => `
+    <div class="card" style="--cc:${CC[cat]}" onclick="openDetail(${l.id})">
+      <div class="card-top">
+        <div class="card-name">${l.firstname} ${l.lastname||''}</div>
+        <div class="score-pill s-${cat}">${l.score}/10</div>
+      </div>
+      <div class="card-info">
+        <div class="card-row">📞 <a href="tel:${l.phone}" style="color:inherit;text-decoration:none" onclick="event.stopPropagation()">${l.phone}</a></div>
+        ${l.city?`<div class="card-row">📍 ${l.city}</div>`:''}
+        ${l.year?`<div class="card-row">🏠 Rakennettu ${l.year}</div>`:''}
+      </div>
+      ${l.problem?`<div class="card-problem">${l.problem.substring(0,60)}${l.problem.length>60?'...':''}</div>`:''}
+      ${l.aiQualified?`<div class="ai-tag">🤖 AI kvalifioitu</div>`:''}
+      ${l.smsSent?`<div class="sms-sent">📱 SMS lähetetty</div>`:''}
+      <div class="card-btns" onclick="event.stopPropagation()">
+        <button class="cbtn call" onclick="callLead('${l.phone}')">📞 Soita</button>
+        <button class="cbtn" onclick="openDetail(${l.id})">👁 Tiedot</button>
+        <button class="cbtn" onclick="resendMsgs(${l.id})">📤 Viesti</button>
+        <button class="cbtn" onclick="delLead(${l.id})">🗑</button>
+      </div>
+      <div class="card-time">${ago(l.createdAt)}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════
+// DETAIL
+// ═══════════════════════════════════════════
+function openDetail(id) {
+  const l = leads.find(x=>x.id===id); if(!l) return;
+  document.getElementById('d-ttl').textContent = `${l.firstname} ${l.lastname||''}`;
+  document.getElementById('d-call').onclick = ()=>callLead(l.phone);
+  const cl = CC[l.category];
+  const lb = {hot:'🟢 Kaupat', warm:'🟡 Lähellä', cold:'🔴 Ripuli'};
+  const lm = msgLog.filter(m=>m.leadId===l.id);
+  document.getElementById('d-body').innerHTML = `
+    <div class="dsec">
+      <div class="dsec-ttl">Yhteystiedot</div>
+      <div class="dgrid">
+        <div><div class="di-lbl">Nimi</div><div class="di-val">${l.firstname} ${l.lastname||''}</div></div>
+        <div><div class="di-lbl">Puhelin</div><div class="di-val"><a href="tel:${l.phone}" style="color:var(--teal)">${l.phone}</a></div></div>
+        ${l.email?`<div><div class="di-lbl">Sähköposti</div><div class="di-val">${l.email}</div></div>`:''}
+        ${l.city?`<div><div class="di-lbl">Kaupunki</div><div class="di-val">${l.city}</div></div>`:''}
+        ${l.year?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${l.year}</div></div>`:''}
+        ${l.hvac?`<div><div class="di-lbl">Ilmanvaihto</div><div class="di-val">${l.hvac}</div></div>`:''}
+        <div><div class="di-lbl">Lähde</div><div class="di-val">${l.source||'—'}</div></div>
+        <div><div class="di-lbl">Lisätty</div><div class="di-val">${new Date(l.createdAt).toLocaleDateString('fi-FI')}</div></div>
+      </div>
+    </div>
+    ${l.problem?`<div class="dsec"><div class="dsec-ttl">Ongelma</div><div style="font-size:13px;line-height:1.6">${l.problem}</div></div>`:''}
+    <div class="dsec">
+      <div class="dsec-ttl">AI Analyysi</div>
+      <div class="cat-badge" style="background:${cl}18;color:${cl};border:1px solid ${cl}35">${lb[l.category]} — ${l.score}/10</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:5px">${l.reasoning||'—'}</div>
+    </div>
+    ${lm.length?`
+    <div class="dsec">
+      <div class="dsec-ttl">Lähetetyt viestit (${lm.length})</div>
+      ${lm.map(m=>`
+        <div class="msg-lbl out">${m.type==='sms'?'📱 SMS':m.type==='email'?'📧 Sähköposti':'🤖 AI'} — ${new Date(m.sentAt).toLocaleString('fi-FI')}</div>
+        <div class="msg-bubble out">${m.content}</div>
+      `).join('')}
+    </div>`:''}
+    <div class="dsec">
+      <div class="dsec-ttl">Siirrä kategoriaan</div>
+      <div class="cat-btns">
+        <button class="cat-btn g" onclick="move(${l.id},'hot');closeM('modal-detail')">🟢 Kaupat</button>
+        <button class="cat-btn a" onclick="move(${l.id},'warm');closeM('modal-detail')">🟡 Lähellä</button>
+        <button class="cat-btn r" onclick="move(${l.id},'cold');closeM('modal-detail')">🔴 Ripuli</button>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal-detail').classList.add('open');
+}
+
+// ═══════════════════════════════════════════
+// ADD LEAD
+// ═══════════════════════════════════════════
+function openAdd() { document.getElementById('modal-add').classList.add('open'); }
+
+async function saveLead() {
+  const fn = v('f-fn'), ph = v('f-ph');
+  if(!fn||!ph){toast('⚠️','Täytä pakolliset kentät','Etunimi ja puhelin');return;}
+
+  const l = {
+    id:Date.now(), firstname:fn, lastname:v('f-ln'), phone:ph,
+    email:v('f-em'), city:v('f-ci'), year:v('f-yr'),
+    hvac:v('f-hv'), problem:v('f-pr'), source:v('f-src')||'manuaalinen',
+    category:'warm', score:5, aiQualified:false, smsSent:false,
+    createdAt:new Date().toISOString()
+  };
+
+  const btn = document.getElementById('btn-save');
+  btn.disabled = true;
+  document.getElementById('save-spin').style.display = 'flex';
+
+  const box = document.getElementById('ai-box');
+  const res = document.getElementById('ai-result');
+  box.style.display = 'block';
+  document.getElementById('ai-spin').style.display = 'block';
+  res.innerHTML = `<div class="ai-thinking"><div class="spin"></div> Analysoidaan liidiä...</div>`;
+
+  const aiRes = await qualify(l);
+  applyAI(l, aiRes);
+
+  document.getElementById('ai-spin').style.display = 'none';
+  const cl = CC[l.category];
+  const lb = {hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
+  res.innerHTML = `
+    <div class="cat-badge" style="background:${cl}18;color:${cl};border:1px solid ${cl}35">${lb[l.category]} — ${l.score}/10</div>
+    <div class="ai-text">${l.reasoning}</div>
+    ${l.smsText?`<div class="ai-msg-lbl" style="margin-top:10px">📱 SMS joka lähtee:</div><div class="ai-msg-preview">${l.smsText}</div>`:''}
+  `;
+
+  leads.push(l);
+  save();
+
+  await sendMessages(l);
+  render();
+  btn.disabled = false;
+  document.getElementById('save-spin').style.display = 'none';
+
+  setTimeout(()=>{
+    closeM('modal-add'); resetForm();
+    toast('🎯',`${fn} lisätty!`,`${lb[l.category]} — SMS ${l.smsSent?'lähetetty ✓':'odottaa'}`);
+  }, 1800);
+}
+
+function resetForm() {
+  ['f-fn','f-ln','f-ph','f-em','f-ci','f-yr','f-pr'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-hv').value='';
+  document.getElementById('f-src').value='meta';
+  document.getElementById('ai-box').style.display='none';
+}
+
+// ═══════════════════════════════════════════
+// AI QUALIFICATION
+// ═══════════════════════════════════════════
+async function qualify(lead) {
+  const key = cfg.anthropicKey;
+  if(!key) return fallbackQualify(lead);
+
+  const prompt = `Olet Koti-ilma Oy:n myyntiassistentti. Analysoi liidi ja palauta VAIN JSON.
+
+LIIDI:
+- Nimi: ${lead.firstname} ${lead.lastname||''}
+- Kaupunki: ${lead.city||'ei kerrottu'}
+- Talon vuosi: ${lead.year||'ei kerrottu'}
+- Ilmanvaihto: ${lead.hvac||'ei kerrottu'}
+- Ongelma: ${lead.problem||'ei kerrottu'}
+- Lähde: ${lead.source}
+
+Palauta VAIN tämä JSON ilman mitään muuta tekstiä:
+{"category":"hot"/"warm"/"cold","score":1-10,"reasoning":"1-2 lausetta suomeksi miksi","sms_text":"personoitu SMS suomeksi max 160 merkkiä, mainitse etunimi ja ongelma, kerro seuraava askel","followup_text":"seurantaviesti 24h päästä suomeksi max 160 merkkiä"}`;
+
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:prompt}]})
+    });
+    const d = await r.json();
+    const txt = d.content[0].text.replace(/```json|```/g,'').trim();
+    return JSON.parse(txt);
+  } catch(e) { return fallbackQualify(lead); }
+}
+
+function fallbackQualify(l) {
+  let score = 5; let category = 'warm';
+  if(l.hvac==='painovoimainen'||l.hvac==='huuppuimuri') score+=2;
+  if(l.year && parseInt(l.year)<2000) score+=1;
+  if(l.problem && l.problem.length>20) score+=1;
+  if(score>=8) category='hot';
+  else if(score<=4) category='cold';
+  return {
+    category, score,
+    reasoning: `Automaattinen analyysi: pisteet ${score}/10. Tarkista manuaalisesti.`,
+    sms_text: `Hei ${l.firstname}! Kiitos yhteydenotosta Koti-ilmalle. Olemme erikoistuneet juuri ${l.problem?'sisäilmaongelmien':'kodin ilmanvaihdon'} ratkaisemiseen. Palataan sinulle pian! — ${cfg.sender}, ${cfg.phone}`,
+    followup_text: `Hei ${l.firstname}, onko sinulle sopiva aika puhua ilmanvaihtokotitilanteestasi? Soitan mielelläni! — ${cfg.sender}`
+  };
+}
+
+function applyAI(lead, res) {
+  lead.category = res.category||'warm';
+  lead.score = res.score||5;
+  lead.reasoning = res.reasoning||'';
+  lead.smsText = res.sms_text||'';
+  lead.followupText = res.followup_text||'';
+  lead.aiQualified = true;
+}
+
+// ═══════════════════════════════════════════
+// SEND MESSAGES
+// ═══════════════════════════════════════════
+async function sendMessages(lead) {
+  if(!lead.smsText) return;
+
+  // Try SMS first
+  const smsSent = await sendSMS(lead.phone, lead.smsText);
+  lead.smsSent = smsSent;
+
+  // Log it
+  logMsg(lead, 'sms', lead.smsText, smsSent);
+
+  // Email as backup
+  if(lead.email && cfg.sendgridKey) {
+    await sendEmail(lead);
+    logMsg(lead, 'email', lead.smsText, true);
+  }
+
+  save();
+}
+
+async function sendSMS(to, body) {
+  if(!cfg.twilioSid||!cfg.twilioToken||!cfg.twilioFrom) {
+    // Simulate for demo
+    console.log('SMS (demo):', to, body);
+    return false;
+  }
+  try {
+    const creds = btoa(`${cfg.twilioSid}:${cfg.twilioToken}`);
+    const r = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${cfg.twilioSid}/Messages.json`,{
+      method:'POST',
+      headers:{'Authorization':`Basic ${creds}`,'Content-Type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams({To:to,From:cfg.twilioFrom,Body:body})
+    });
+    return r.ok;
+  } catch(e){ return false; }
+}
+
+async function sendEmail(lead) {
+  if(!cfg.sendgridKey||!cfg.emailFrom||!lead.email) return false;
+  try {
+    await fetch('https://api.sendgrid.com/v3/mail/send',{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${cfg.sendgridKey}`,'Content-Type':'application/json'},
+      body:JSON.stringify({
+        personalizations:[{to:[{email:lead.email,name:`${lead.firstname} ${lead.lastname||''}`}]}],
+        from:{email:cfg.emailFrom,name:'Koti-ilma'},
+        subject:`Hei ${lead.firstname} — Koti-ilma`,
+        content:[{type:'text/plain',value:lead.smsText}]
+      })
+    });
+    return true;
+  } catch(e){ return false; }
+}
+
+function logMsg(lead, type, content, sent) {
+  msgLog.push({id:Date.now()+Math.random(), leadId:lead.id,
+    leadName:`${lead.firstname} ${lead.lastname||''}`,
+    phone:lead.phone, type, content, sent,
+    sentAt:new Date().toISOString()
+  });
+  localStorage.setItem('ki-msgs', JSON.stringify(msgLog));
+  document.getElementById('nb-messages').textContent = msgLog.length;
+}
+
+async function resendMsgs(id) {
+  const l = leads.find(x=>x.id===id); if(!l) return;
+  if(!l.smsText) { toast('⚠️','Ei viestiä','Lisää API-avain asetuksiin'); return; }
+  await sendMessages(l);
+  toast('📱','Viesti lähetetty',l.phone);
+}
+
+// ═══════════════════════════════════════════
+// MESSAGES VIEW
+// ═══════════════════════════════════════════
+function renderMessages() {
+  const el = document.getElementById('msg-log');
+  if(!msgLog.length){ el.innerHTML=`<div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.</div></div>`; return; }
+  el.innerHTML = msgLog.slice().reverse().map(m=>`
+    <div class="msg-log-item">
+      <div class="msg-log-head">
+        <div>
+          <div class="msg-log-name">${m.leadName}</div>
+          <div style="display:flex;gap:5px;margin-top:3px">
+            <span class="msg-type-badge mt-${m.type}">${m.type.toUpperCase()}</span>
+            ${m.sent?`<span class="msg-type-badge" style="background:rgba(34,197,94,0.08);color:var(--green)">✓ Lähetetty</span>`:`<span class="msg-type-badge" style="background:rgba(239,68,68,0.08);color:#f87171">Demo-tila</span>`}
+          </div>
+        </div>
+        <div class="msg-log-time">${new Date(m.sentAt).toLocaleString('fi-FI')}</div>
+      </div>
+      <div class="msg-log-text">${m.content}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">📱 ${m.phone}</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════
+// WEBHOOK TEST
+// ═══════════════════════════════════════════
+async function testWebhook() {
+  const lead = {
+    firstname:v('t-fn'), lastname:v('t-ln'),
+    phone:v('t-ph'), city:v('t-ci'), problem:v('t-pr'),
+    source:'webhook-test', email:''
+  };
+  toast('⚡','Testiliidi käsitellään...','AI kvalifioi');
+  await processIncoming(lead);
+  showView('pipeline', document.querySelector('.nav-item'));
+  render();
+}
+
+// ═══════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════
+function loadSettings() {
+  document.getElementById('cfg-sender').value = cfg.sender;
+  document.getElementById('cfg-phone').value = cfg.phone;
+  document.getElementById('cfg-strategy').value = cfg.strategy;
+  if(cfg.anthropicKey) document.getElementById('key-anthropic').value = cfg.anthropicKey;
+  if(cfg.twilioSid) document.getElementById('key-twilio-sid').value = cfg.twilioSid;
+  if(cfg.twilioToken) document.getElementById('key-twilio-token').value = cfg.twilioToken;
+  if(cfg.twilioFrom) document.getElementById('key-twilio-from').value = cfg.twilioFrom;
+  if(cfg.emailFrom) document.getElementById('key-email-from').value = cfg.emailFrom;
+  if(cfg.sendgridKey) document.getElementById('key-sendgrid').value = cfg.sendgridKey;
+}
+
+function saveSettings() {
+  cfg.sender = v('cfg-sender');
+  cfg.phone = v('cfg-phone');
+  cfg.strategy = v('cfg-strategy');
+  cfg.anthropicKey = v('key-anthropic');
+  cfg.twilioSid = v('key-twilio-sid');
+  cfg.twilioToken = v('key-twilio-token');
+  cfg.twilioFrom = v('key-twilio-from');
+  cfg.emailFrom = v('key-email-from');
+  cfg.sendgridKey = v('key-sendgrid');
+  localStorage.setItem('ki-cfg', JSON.stringify(cfg));
+
+  // Update setup steps
+  if(cfg.anthropicKey) document.getElementById('step1').className='setup-step done';
+  toast('💾','Asetukset tallennettu','');
+}
+
+async function testAnthropic() {
+  const key = v('key-anthropic');
+  if(!key){toast('⚠️','Syötä API-avain','');return;}
+  const dot = document.getElementById('dot-anthropic');
+  const status = document.getElementById('status-anthropic');
+  dot.style.background='var(--amber)'; status.textContent='Testataan...';
+  try {
+    const r = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:10,messages:[{role:'user',content:'Hi'}]})
+    });
+    if(r.ok){dot.style.background='var(--green)';status.textContent='✓ Toimii!';toast('✅','Anthropic API toimii','AI on valmis');}
+    else{dot.style.background='var(--red)';status.textContent='Virhe — tarkista avain';}
+  }catch(e){dot.style.background='var(--red)';status.textContent='Yhteysvirhe';}
+}
+
+async function testFullPipeline() {
+  toast('🧪','Testataan koko putki...','');
+  showView('webhook', document.querySelector('.nav-item:nth-child(4)'));
+  setTimeout(()=>testWebhook(), 500);
+}
+
+// ═══════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════
+function callLead(ph) { window.location.href = `tel:${ph}`; }
+function move(id, cat) {
+  const l=leads.find(x=>x.id===id); if(!l) return;
+  l.category=cat; save(); render();
+  const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
+  toast('✅','Siirretty',lb[cat]);
+}
+function delLead(id) {
+  if(!confirm('Poistetaanko liidi?')) return;
+  leads=leads.filter(x=>x.id!==id); save(); render();
+  toast('🗑️','Poistettu','');
+}
+function copyUrl() { navigator.clipboard.writeText(document.getElementById('wh-url').textContent); toast('📋','Kopioitu!','Liitä Meta Webhooks-asetuksiin'); }
+
+function loadDemo() {
+  leads = [
+    {id:1,firstname:'Markku',lastname:'Häkkinen',phone:'040 123 4567',email:'markku@email.fi',city:'Oulu',year:'1982',hvac:'painovoimainen',problem:'Yöllinen yskiminen koko perheellä, allergiaoireet pahenivat',source:'meta',category:'hot',score:9,reasoning:'Vanha painovoimainen ilmanvaihto + vakavat allergiaoireet = erittäin korkea ostovalmius. Koko perhe kärsii.',smsText:`Hei Markku! Allergiaoireet ja yöyskiminen ovat juuri niitä merkkejä joihin meillä on ratkaisu. Soitetaan sinulle tänään! — Henri, 010 200 7561`,aiQualified:true,smsSent:true,createdAt:new Date(Date.now()-3600000).toISOString()},
+    {id:2,firstname:'Pirjo',lastname:'Mäkinen',phone:'050 987 6543',city:'Kempele',year:'1995',hvac:'huippuimuri',problem:'Korkeat lämmityslaskut, tunkkaisuus talvisin',source:'meta',category:'warm',score:7,reasoning:'Huippuimuri + energiakulut = hyvä talousmotivaatio. Soita tänään.',smsText:`Hei Pirjo! Lämmityslaskujen pienentäminen on yksi yleisimmistä syistä ottaa yhteyttä. Kerrotaan lisää! — Henri`,aiQualified:true,smsSent:true,createdAt:new Date(Date.now()-86400000).toISOString()},
+    {id:3,firstname:'Jukka',lastname:'Leinonen',phone:'044 555 3333',city:'Haukipudas',year:'2016',hvac:'lto',problem:'Kuullut naapurilta, vähän utelias',source:'suositus',category:'cold',score:3,reasoning:'LTO jo olemassa, uusi talo, ei selvää kipupistettä. Ei kannata panostaa nyt.',smsText:`Hei Jukka! Mukava kuulla naapurisuosituksesta. Jos haluaa jutella ilmanvaihdosta joskus, ota rohkeasti yhteyttä! — Henri`,aiQualified:true,smsSent:false,createdAt:new Date(Date.now()-172800000).toISOString()}
+  ];
+  save(); render();
+  toast('📋','Demo-data ladattu','3 esimerkkiliidiä lisätty');
+}
+
+function clearAll() {
+  if(!confirm('Poistetaanko kaikki liidit?')) return;
+  leads=[]; save(); render();
+}
+
+// ═══════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════
+function v(id){ return document.getElementById(id)?.value?.trim()||''; }
+function save(){ localStorage.setItem('ki-leads',JSON.stringify(leads)); }
+function closeM(id){ document.getElementById(id).classList.remove('open'); }
+function ago(d){
+  const m=Math.floor((Date.now()-new Date(d))/60000);
+  if(m<1) return 'Juuri nyt';
+  if(m<60) return m+'min sitten';
+  const h=Math.floor(m/60);
+  if(h<24) return h+'h sitten';
+  return Math.floor(h/24)+'pv sitten';
+}
+function toast(ico,ttl,sub){
+  document.getElementById('t-ico').textContent=ico;
+  document.getElementById('t-ttl').textContent=ttl;
+  document.getElementById('t-sub').textContent=sub;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// Close modals on overlay click
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+
+init();
+</script>
+</body>
+</html>
