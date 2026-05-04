@@ -465,7 +465,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 
 <script>
 // Detect if running on render.com or locally
-const BASE_URL = window.location.origin;
+const BASE_URL = 'https://kotiilma-crm-api.onrender.com';
 const API = (path) => `${BASE_URL}${path}`;
 
 let leads = JSON.parse(localStorage.getItem('ki-leads') || '[]');
