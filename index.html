@@ -175,7 +175,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .msg-log-time{font-size:10px;color:var(--muted)}
 .msg-type-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px}
 .mt-sms{background:rgba(46,196,182,0.1);color:var(--teal)}
-.mt-email{background:rgba(99,102,241,0.1);color:#818cf8}
 .msg-log-text{font-size:12px;color:var(--muted);line-height:1.55;background:var(--bg);border-radius:7px;padding:9px 11px;margin-top:5px}
 
 .toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;z-index:999;transform:translateY(70px);opacity:0;transition:all .3s;max-width:320px;box-shadow:0 16px 40px rgba(0,0,0,0.4)}
@@ -221,7 +220,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
     <hr class="sidebar-divider">
     <div class="sidebar-section">Asetukset</div>
     <button class="nav-item" onclick="showView('webhook',this)">
-      <span>🔗</span> Meta Webhook
+      <span>🔗</span> Webhookit
     </button>
     <button class="nav-item" onclick="showView('settings',this)">
       <span>⚙️</span> Agentti
@@ -263,7 +262,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
       <div class="pipeline-header">
         <div class="pipeline-title">Pipeline</div>
         <div class="pipeline-actions">
-          <button class="btn-sm" onclick="loadDemo()">📋 Lataa demo</button>
+          <button class="btn-sm" onclick="refreshLeads()">🔄 Päivitä</button>
           <button class="btn-sm" onclick="clearAll()">🗑️ Tyhjennä</button>
         </div>
       </div>
@@ -303,23 +302,13 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 
     <!-- WEBHOOK -->
     <div id="view-webhook" style="display:none">
-      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Meta Webhook</div>
+      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Webhookit</div>
       <div class="webhook-card">
-        <div class="webhook-card-ttl">🔗 Webhook URL — liitä Meta Business Manageriin</div>
+        <div class="webhook-card-ttl">🔗 Meta & Google Ads Webhook URL</div>
         <div class="url-box" id="wh-url">Ladataan...</div>
         <button class="copy-btn" onclick="copyUrl()">📋 Kopioi</button>
         <div class="hint-box" style="margin-top:12px">
-          💡 Tämä URL on palvelimellasi render.com:ssa. Meta lähettää liidit automaattisesti tähän osoitteeseen.
-        </div>
-      </div>
-      <div class="webhook-card">
-        <div class="webhook-card-ttl">📋 Ohjeet — Meta Business Manager</div>
-        <div class="step-list">
-          <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Avaa Meta Business Manager</strong> → Mainostilit → valitse mainostilisi</div></div>
-          <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Luo kampanja</strong> → Tavoite: Liidien generointi → Lead Gen -lomake</div></div>
-          <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Lomakeasetukset</strong> → Webhooks → "Lisää webhook" → liitä URL yllä olevasta kentästä</div></div>
-          <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Kentät:</strong> Etunimi, Sukunimi, Puhelin, Sähköposti, Paikkakunta, "Mikä on kotisi ongelma?"</div></div>
-          <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Julkaise</strong> → testaa täyttämällä lomake → liidi ilmestyy dashboardiin!</div></div>
+          💡 Sama URL toimii sekä Meta- että Google Ads -liideille. Lähde tunnistetaan automaattisesti mainoksen nimestä.
         </div>
       </div>
       <div class="webhook-card">
@@ -464,17 +453,32 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 </div>
 
 <script>
-// Detect if running on render.com or locally
 const BASE_URL = 'https://kotiilma-crm-api.onrender.com';
 const API = (path) => `${BASE_URL}${path}`;
 
-let leads = JSON.parse(localStorage.getItem('ki-leads') || '[]');
+let leads = [];
 let msgLog = JSON.parse(localStorage.getItem('ki-msgs') || '[]');
 
-function init() {
-  // Set webhook URL
+// ═══════════════════════════════════════
+// INIT — hakee liidit palvelimelta
+// ═══════════════════════════════════════
+async function init() {
   document.getElementById('wh-url').textContent = `${BASE_URL}/webhook/meta`;
-  render();
+  await refreshLeads();
+  // Päivitä automaattisesti 30 sekunnin välein
+  setInterval(refreshLeads, 30000);
+}
+
+async function refreshLeads() {
+  try {
+    const res = await fetch(API('/api/leads'));
+    if (res.ok) {
+      leads = await res.json();
+      render();
+    }
+  } catch(e) {
+    console.error('Virhe ladattaessa liidejä:', e);
+  }
 }
 
 // ═══════════════════════════════════════
@@ -526,7 +530,7 @@ function renderCol(id, items, cat) {
       <div class="card-info">
         <div class="card-row">📞 <a href="tel:${l.phone}" style="color:inherit;text-decoration:none" onclick="event.stopPropagation()">${l.phone}</a></div>
         ${l.city?`<div class="card-row">📍 ${l.city}</div>`:''}
-        ${l.year?`<div class="card-row">🏠 Rakennettu ${l.year}</div>`:''}
+        ${l.source?`<div class="card-row">📌 ${l.source}</div>`:''}
       </div>
       ${l.problem?`<div class="card-problem">${l.problem.substring(0,60)}${l.problem.length>60?'...':''}</div>`:''}
       ${l.aiQualified?`<div class="ai-tag">🤖 AI kvalifioitu</div>`:''}
@@ -542,7 +546,7 @@ function renderCol(id, items, cat) {
 }
 
 // ═══════════════════════════════════════
-// AI VIA BACKEND
+// AI
 // ═══════════════════════════════════════
 async function qualify(lead) {
   try {
@@ -560,7 +564,7 @@ async function qualify(lead) {
 
 function fallbackQualify(l) {
   let score = 5;
-  if(l.hvac==='painovoimainen'||l.hvac==='huuppuimuri') score+=2;
+  if(l.hvac==='painovoimainen'||l.hvac==='huippuimuri') score+=2;
   if(l.year && parseInt(l.year)<2000) score+=1;
   if(l.problem && l.problem.length>20) score+=1;
   const category = score>=8?'hot':score<=4?'cold':'warm';
@@ -650,15 +654,20 @@ async function saveLead() {
     ${l.smsText?`<div class="ai-msg-lbl" style="margin-top:10px">📱 SMS:</div><div class="ai-msg-preview">${l.smsText}</div>`:''}
   `;
 
-  // Send SMS
   if (l.phone && l.smsText) {
     const sent = await sendSMS(l.phone, l.smsText);
     l.smsSent = sent;
     logMsg(l, 'sms', l.smsText, sent);
   }
 
+  // Tallenna palvelimelle
+  await fetch(API('/api/leads'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(l)
+  });
+
   leads.push(l);
-  saveLeads();
   render();
 
   btn.disabled = false;
@@ -756,65 +765,80 @@ function renderMessages() {
 // WEBHOOK TEST
 // ═══════════════════════════════════════
 async function testWebhook() {
-  const lead = {
-    id: Date.now(), firstname:v('t-fn'), lastname:v('t-ln'),
-    phone:v('t-ph'), city:v('t-ci'), problem:v('t-pr'),
-    source:'webhook-test', email:'', year:'', hvac:'',
-    category:'warm', score:5, aiQualified:false, smsSent:false,
-    createdAt: new Date().toISOString()
-  };
-  toast('⚡','Testiliidi käsitellään...','AI kvalifioi');
-  const aiRes = await qualify(lead);
-  lead.category = aiRes.category;
-  lead.score = aiRes.score;
-  lead.reasoning = aiRes.reasoning;
-  lead.smsText = aiRes.sms_text;
-  lead.aiQualified = true;
-  if(lead.phone && lead.smsText) {
-    lead.smsSent = await sendSMS(lead.phone, lead.smsText);
-    logMsg(lead, 'sms', lead.smsText, lead.smsSent);
+  toast('⚡','Lähetetään testiliidi...','');
+  try {
+    const res = await fetch(API('/webhook/meta'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: v('t-fn') + ' ' + v('t-ln'),
+        phone: v('t-ph'),
+        city: v('t-ci'),
+        problem: v('t-pr'),
+        source: 'Webhook testi'
+      })
+    });
+    if (res.ok) {
+      await refreshLeads();
+      showView('pipeline', document.querySelector('.nav-item'));
+      toast('✅','Testiliidi lisätty!','Tarkista pipeline');
+    }
+  } catch(e) {
+    toast('❌','Virhe','Tarkista yhteys');
   }
-  leads.push(lead);
-  saveLeads();
-  render();
-  showView('pipeline', document.querySelector('.nav-item'));
-  toast('✅','Testiliidi lisätty!','Tarkista pipeline');
 }
 
 // ═══════════════════════════════════════
 // ACTIONS
 // ═══════════════════════════════════════
 function callLead(ph) { window.location.href=`tel:${ph}`; }
-function move(id, cat) {
+
+async function move(id, cat) {
   const l=leads.find(x=>x.id===id); if(!l) return;
-  l.category=cat; saveLeads(); render();
+  l.category=cat;
+  await fetch(API('/api/leads/update'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, category: cat })
+  });
+  render();
   const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
   toast('✅','Siirretty',lb[cat]);
 }
-function delLead(id) {
+
+async function delLead(id) {
   if(!confirm('Poistetaanko?')) return;
-  leads=leads.filter(x=>x.id!==id); saveLeads(); render();
+  await fetch(API('/api/leads/delete'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  });
+  leads=leads.filter(x=>x.id!==id);
+  render();
 }
+
+async function clearAll() {
+  if(!confirm('Poistetaanko kaikki?')) return;
+  for (const l of leads) {
+    await fetch(API('/api/leads/delete'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: l.id })
+    });
+  }
+  leads=[];
+  render();
+}
+
 function copyUrl() {
   navigator.clipboard.writeText(document.getElementById('wh-url').textContent);
   toast('📋','Kopioitu!','');
 }
-function loadDemo() {
-  leads = [
-    {id:1,firstname:'Markku',lastname:'Häkkinen',phone:'040 123 4567',email:'',city:'Oulu',year:'1982',hvac:'painovoimainen',problem:'Yöllinen yskiminen koko perheellä, allergiaoireet pahenivat',source:'meta',category:'hot',score:9,reasoning:'Vanha painovoimainen + allergiaoireet = erittäin korkea ostovalmius.',smsText:'Hei Markku! Allergiaoireet ja yöyskiminen ovat juuri niitä merkkejä joihin meillä on ratkaisu. Soitetaan tänään! — Erika',aiQualified:true,smsSent:true,createdAt:new Date(Date.now()-3600000).toISOString()},
-    {id:2,firstname:'Pirjo',lastname:'Mäkinen',phone:'050 987 6543',email:'',city:'Kempele',year:'1995',hvac:'huippuimuri',problem:'Korkeat lämmityslaskut, tunkkaisuus talvisin',source:'meta',category:'warm',score:7,reasoning:'Huippuimuri + energiakulut = hyvä talousmotivaatio.',smsText:'Hei Pirjo! Lämmityslaskujen pienentäminen on yksi yleisimmistä syistä ottaa yhteyttä. — Erika',aiQualified:true,smsSent:true,createdAt:new Date(Date.now()-86400000).toISOString()},
-    {id:3,firstname:'Jukka',lastname:'Leinonen',phone:'044 555 3333',email:'',city:'Haukipudas',year:'2016',hvac:'lto',problem:'Kuullut naapurilta, vähän utelias',source:'suositus',category:'cold',score:3,reasoning:'LTO jo olemassa, uusi talo, ei selvää kipupistettä.',smsText:'Hei Jukka! Mukava kuulla naapurisuosituksesta! — Erika',aiQualified:true,smsSent:false,createdAt:new Date(Date.now()-172800000).toISOString()}
-  ];
-  saveLeads(); render();
-  toast('📋','Demo-data ladattu','');
-}
-function clearAll() { if(!confirm('Poistetaanko kaikki?')) return; leads=[]; saveLeads(); render(); }
 
 // ═══════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════
 function v(id){ return document.getElementById(id)?.value?.trim()||''; }
-function saveLeads(){ localStorage.setItem('ki-leads',JSON.stringify(leads)); }
 function closeM(id){ document.getElementById(id).classList.remove('open'); }
 function ago(d){
   const m=Math.floor((Date.now()-new Date(d))/60000);
