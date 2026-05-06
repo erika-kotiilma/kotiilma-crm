@@ -12,6 +12,25 @@ const TWILIO_FROM = process.env.TWILIO_FROM || '';
 const SENDGRID_KEY = process.env.SENDGRID_KEY || '';
 const EMAIL_FROM = process.env.EMAIL_FROM || '';
 
+const LEADS_FILE = path.join(__dirname, 'leads.json');
+
+function loadLeads() {
+  try {
+    if (fs.existsSync(LEADS_FILE)) {
+      return JSON.parse(fs.readFileSync(LEADS_FILE, 'utf8'));
+    }
+  } catch(e) {}
+  return [];
+}
+
+function saveLeads(leads) {
+  try {
+    fs.writeFileSync(LEADS_FILE, JSON.stringify(leads), 'utf8');
+  } catch(e) {
+    console.error('Error saving leads:', e);
+  }
+}
+
 function setCORS(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -89,6 +108,47 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(404);
       res.end('Not found');
     }
+    return;
+  }
+
+  // GET leads endpoint - hakee liidit tiedostosta
+  if (req.method === 'GET' && pathname === '/api/leads') {
+    const leads = loadLeads();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(leads));
+    return;
+  }
+
+  // POST leads endpoint - tallentaa liidin
+  if (req.method === 'POST' && pathname === '/api/leads') {
+    const body = await parseBody(req);
+    const leads = loadLeads();
+    leads.push(body);
+    saveLeads(leads);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  // DELETE lead endpoint
+  if (req.method === 'POST' && pathname === '/api/leads/delete') {
+    const body = await parseBody(req);
+    let leads = loadLeads();
+    leads = leads.filter(l => l.id !== body.id);
+    saveLeads(leads);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
+    return;
+  }
+
+  // UPDATE lead endpoint
+  if (req.method === 'POST' && pathname === '/api/leads/update') {
+    const body = await parseBody(req);
+    let leads = loadLeads();
+    leads = leads.map(l => l.id === body.id ? { ...l, ...body } : l);
+    saveLeads(leads);
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ ok: true }));
     return;
   }
 
@@ -236,6 +296,31 @@ Palauta VAIN tämä JSON ilman mitään muuta tekstiä:
     if (req.method === 'POST') {
       const body = await parseBody(req);
       console.log('Meta webhook received:', JSON.stringify(body));
+
+      // Tallenna liidi tiedostoon
+      const nameParts = (body.name || '').split(' ');
+      const lead = {
+        id: Date.now(),
+        firstname: nameParts[0] || '',
+        lastname: nameParts.slice(1).join(' ') || '',
+        phone: body.phone || '',
+        email: body.email || '',
+        city: body.address || body.city || '',
+        zip: body.zip || '',
+        source: body.source || 'Meta',
+        category: 'warm',
+        score: 5,
+        aiQualified: false,
+        smsSent: false,
+        createdAt: new Date().toISOString()
+      };
+
+      const leads = loadLeads();
+      leads.push(lead);
+      saveLeads(leads);
+
+      console.log('Lead saved:', lead.firstname, lead.lastname);
+
       res.writeHead(200);
       res.end('ok');
       return;
