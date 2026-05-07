@@ -166,16 +166,44 @@ const server = http.createServer(async (req, res) => {
 
     const prompt = `Olet Koti-ilma Oy:n myyntiassistentti. Analysoi tämä liidi ja palauta VAIN JSON.
 
+Koti-ilma Oy myy ilmanvaihdon saneerauksia (ILP) ja ilmanvaihdon puhdistuksia Pohjois-Suomessa.
+
 LIIDI:
 - Nimi: ${lead.firstname || ''} ${lead.lastname || ''}
-- Kaupunki: ${lead.city || 'ei kerrottu'}
-- Talon vuosi: ${lead.year || 'ei kerrottu'}
-- Ilmanvaihto: ${lead.hvac || 'ei kerrottu'}
-- Ongelma: ${lead.problem || 'ei kerrottu'}
-- Lähde: ${lead.source || 'ei kerrottu'}
+- Puhelin: ${lead.phone || 'ei kerrottu'}
+- Osoite: ${lead.city || lead.address || 'ei kerrottu'}
+- Mainos/Lähde: ${lead.source || 'ei kerrottu'}
+
+ILP-LOMAKKEEN VASTAUKSET:
+- Milloin asennus ajankohtainen: ${lead.install_timing || 'ei kerrottu'}
+- Kiinteistön tyyppi: ${lead.property_type || 'ei kerrottu'}
+- Kiinteistön koko: ${lead.property_size || 'ei kerrottu'}
+- Halutut ominaisuudet (viilennys/lämmitys): ${lead.hvac_features || 'ei kerrottu'}
+
+PUHDISTUS-LOMAKKEEN VASTAUKSET:
+- Milloin puhdistus ajankohtainen: ${lead.cleaning_timing || 'ei kerrottu'}
+- Talotyyppi: ${lead.house_type || 'ei kerrottu'}
+- Pinta-ala: ${lead.floor_area || 'ei kerrottu'}
+- Kerrokset: ${lead.floors || 'ei kerrottu'}
+- Venttiilien määrä: ${lead.vents || 'ei kerrottu'}
+
+KVALIFIOINTIOHJE - tärkein tekijä on MILLOIN asennus/puhdistus on ajankohtainen:
+
+KAUPAT (hot, score 8-10) - osta nyt:
+- "mahdollisimman_pian", "heti", "nyt", "toukokuussa" tai kuukauden sisällä
+- Puhdistus: "touko-kesäkuussa" tai heti
+
+LAHELLA (warm, score 5-7) - osta 2 kuukauden sisällä:
+- "kesäkuussa", "kesällä", "kahden kuukauden sisällä", "2kk"
+- Puhdistus: myöhemmin kesällä
+
+RIPULI (cold, score 1-4) - ei osta nyt:
+- "syksyllä", "ensi vuonna", "myöhemmin", "tiedustelee", "ehkä"
+- Epämääräinen tai kaukainen ajankohta
+- Vain utelias ilman selkeää tarvetta
 
 Palauta VAIN tämä JSON ilman mitään muuta tekstiä:
-{"category":"hot"/"warm"/"cold","score":1-10,"reasoning":"1-2 lausetta suomeksi miksi","sms_text":"personoitu SMS suomeksi max 160 merkkiä, mainitse etunimi ja ongelma","followup_text":"seurantaviesti 24h päästä suomeksi max 160 merkkiä"}`;
+{"category":"hot tai warm tai cold","score":1-10,"reasoning":"1-2 lausetta suomeksi MIKSI tämä kategoria ja mainitse tärkein syy lomakkeen vastauksista","sms_text":"personoitu SMS suomeksi max 160 merkkiä mainitse etunimi ja konkreettinen asia lomakkeesta","followup_text":"seurantaviesti 24h päästä suomeksi max 160 merkkiä"}`;
 
     try {
       const result = await httpsPost('api.anthropic.com', '/v1/messages', {
@@ -308,6 +336,17 @@ Palauta VAIN tämä JSON ilman mitään muuta tekstiä:
         city: body.address || body.city || '',
         zip: body.zip || '',
         source: body.source || 'Meta',
+        // ILP kentät
+        install_timing: body.install_timing || '',
+        property_type: body.property_type || '',
+        property_size: body.property_size || '',
+        hvac_features: body.hvac_features || '',
+        // Puhdistus kentät
+        cleaning_timing: body.cleaning_timing || '',
+        house_type: body.house_type || '',
+        floor_area: body.floor_area || '',
+        floors: body.floors || '',
+        vents: body.vents || '',
         category: 'warm',
         score: 5,
         aiQualified: false,
@@ -319,7 +358,7 @@ Palauta VAIN tämä JSON ilman mitään muuta tekstiä:
       leads.push(lead);
       saveLeads(leads);
 
-      console.log('Lead saved:', lead.firstname, lead.lastname);
+      console.log('Lead saved:', lead.firstname, lead.lastname, '| timing:', lead.install_timing || lead.cleaning_timing);
 
       res.writeHead(200);
       res.end('ok');
