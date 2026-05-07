@@ -12,7 +12,7 @@ const TWILIO_FROM = process.env.TWILIO_FROM || '';
 const SENDGRID_KEY = process.env.SENDGRID_KEY || '';
 const EMAIL_FROM = process.env.EMAIL_FROM || '';
 
-const LEADS_FILE = path.join(__dirname, 'leads.json');
+const LEADS_FILE = process.env.LEADS_FILE || '/data/leads.json';
 
 function loadLeads() {
   try {
