@@ -27,7 +27,6 @@
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,196,182,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(46,196,182,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
 .app{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
-
 header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .logo{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;display:flex;align-items:center;gap:10px}
 .logo-mark{width:30px;height:30px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:var(--navy)}
@@ -38,7 +37,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.4)}}
 .btn-new{background:var(--teal);color:var(--navy);border:none;padding:7px 16px;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
 .btn-new:hover{background:#25a99d;transform:translateY(-1px)}
-
 .layout{display:flex;flex:1}
 .sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:20px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
 .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--muted);transition:all .2s;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
@@ -48,9 +46,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .nav-item.active .nav-badge{background:rgba(46,196,182,0.2);color:var(--teal)}
 .sidebar-section{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:14px 12px 6px;font-weight:600}
 .sidebar-divider{border:none;border-top:1px solid var(--border2);margin:8px 0}
-
 .content{flex:1;padding:28px;overflow-y:auto}
-
 .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;position:relative;overflow:hidden;transition:transform .2s}
 .stat:hover{transform:translateY(-2px)}
@@ -59,13 +55,11 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .stat-val{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;line-height:1;color:var(--c,var(--teal))}
 .stat-sub{font-size:11px;color:var(--muted);margin-top:4px}
 .stat-trend{color:var(--green);font-weight:600}
-
 .pipeline-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .pipeline-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700}
 .pipeline-actions{display:flex;gap:8px}
 .btn-sm{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
 .btn-sm:hover{border-color:var(--teal);color:var(--teal)}
-
 .pipeline{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .col{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column}
 .col-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
@@ -73,7 +67,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .col-dot{width:8px;height:8px;border-radius:50%}
 .col-cnt{font-size:11px;color:var(--muted);background:var(--bg);padding:2px 8px;border-radius:6px}
 .col-body{padding:10px;flex:1;min-height:280px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:60vh}
-
 .card{background:var(--bg);border:1px solid var(--border2);border-radius:11px;padding:13px 15px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;animation:popIn .25s ease}
 @keyframes popIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cc,var(--teal))}
@@ -95,11 +88,9 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .cbtn.call{background:rgba(34,197,94,0.08);color:var(--green);border-color:rgba(34,197,94,0.25)}
 .cbtn.call:hover{background:rgba(34,197,94,0.15)}
 .card-time{font-size:9px;color:var(--muted);text-align:right;margin-top:4px}
-
 .empty{text-align:center;padding:40px 16px;color:var(--muted)}
 .empty-ico{font-size:28px;margin-bottom:8px}
 .empty-txt{font-size:12px;line-height:1.6}
-
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(5px);z-index:200;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .2s}
 .overlay.open{opacity:1;pointer-events:all}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;width:100%;max-width:580px;max-height:92vh;overflow-y:auto;transform:scale(.96);transition:transform .2s}
@@ -110,7 +101,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .modal-close:hover{border-color:var(--teal);color:var(--text)}
 .modal-body{padding:22px 26px}
 .modal-foot{padding:14px 26px 22px;display:flex;gap:8px;justify-content:flex-end}
-
 .fg{margin-bottom:14px}
 .fl{display:block;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
 .fi,.fs,.ft{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:9px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
@@ -118,7 +108,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .fs option{background:var(--surface)}
 .ft{min-height:72px;resize:vertical}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
 .ai-box{background:var(--bg);border:1px solid rgba(46,196,182,0.2);border-radius:11px;padding:14px;margin-bottom:14px}
 .ai-box-ttl{font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;display:flex;align-items:center;gap:5px}
 .spin{width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
@@ -128,13 +117,11 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .ai-text{font-size:12px;line-height:1.65;color:var(--text)}
 .ai-msg-preview{background:var(--surface2);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.6;border-left:2px solid var(--teal);color:var(--muted)}
 .ai-msg-lbl{font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-
 .btn-p{padding:9px 22px;border-radius:10px;border:none;background:var(--teal);color:var(--navy);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
 .btn-p:hover{background:#25a99d}
 .btn-p:disabled{opacity:.4;cursor:not-allowed}
 .btn-s{padding:9px 18px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s}
 .btn-s:hover{border-color:var(--teal);color:var(--text)}
-
 .dsec{margin-bottom:18px}
 .dsec-ttl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding-bottom:7px;border-bottom:1px solid var(--border2);margin-bottom:10px;font-weight:600}
 .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -152,11 +139,9 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .cat-btn.a:hover{background:rgba(245,158,11,0.1)}
 .cat-btn.r{border-color:rgba(239,68,68,0.2);color:#f87171}
 .cat-btn.r:hover{background:rgba(239,68,68,0.1)}
-
 .settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .settings-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
 .settings-card-ttl{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:16px}
-
 .webhook-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
 .webhook-card-ttl{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:12px}
 .url-box{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 14px;font-family:monospace;font-size:12px;color:var(--teal);word-break:break-all;line-height:1.5;margin-bottom:8px}
@@ -168,7 +153,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .step-content{font-size:12px;color:var(--muted);line-height:1.6}
 .step-content strong{color:var(--text)}
 .hint-box{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:9px;padding:12px 15px;font-size:12px;color:var(--amber);line-height:1.6;margin-top:12px}
-
 .msg-log-item{padding:14px 0;border-bottom:1px solid var(--border2)}
 .msg-log-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .msg-log-name{font-size:13px;font-weight:600}
@@ -176,15 +160,12 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .msg-type-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:4px}
 .mt-sms{background:rgba(46,196,182,0.1);color:var(--teal)}
 .msg-log-text{font-size:12px;color:var(--muted);line-height:1.55;background:var(--bg);border-radius:7px;padding:9px 11px;margin-top:5px}
-
 .toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 18px;display:flex;align-items:center;gap:10px;z-index:999;transform:translateY(70px);opacity:0;transition:all .3s;max-width:320px;box-shadow:0 16px 40px rgba(0,0,0,0.4)}
 .toast.show{transform:translateY(0);opacity:1}
 .toast-ttl{font-size:13px;font-weight:600}
 .toast-sub{font-size:11px;color:var(--muted)}
-
 .status-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--muted)}
 .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-
 @media(max-width:900px){.sidebar{display:none}.pipeline{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.settings-grid{grid-template-columns:1fr}}
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
@@ -193,7 +174,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 </head>
 <body>
 <div class="app">
-
 <header>
   <div class="logo">
     <div class="logo-mark">K</div>
@@ -205,7 +185,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
     <button class="btn-new" onclick="openAdd()">+ Uusi liidi</button>
   </div>
 </header>
-
 <div class="layout">
   <div class="sidebar">
     <div class="sidebar-section">Näkymät</div>
@@ -231,9 +210,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
       Soita ensin 🟡 Lähellä-kategorialle — ne ovat valmiimpia kuin luuletkaan.
     </div>
   </div>
-
   <div class="content">
-
     <!-- PIPELINE -->
     <div id="view-pipeline">
       <div class="stats-grid">
@@ -258,7 +235,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <div class="stat-sub">automaattisesti</div>
         </div>
       </div>
-
       <div class="pipeline-header">
         <div class="pipeline-title">Pipeline</div>
         <div class="pipeline-actions">
@@ -266,7 +242,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <button class="btn-sm" onclick="clearAll()">🗑️ Tyhjennä</button>
         </div>
       </div>
-
       <div class="pipeline">
         <div class="col">
           <div class="col-head">
@@ -291,7 +266,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         </div>
       </div>
     </div>
-
     <!-- MESSAGES -->
     <div id="view-messages" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Lähetetyt viestit</div>
@@ -299,7 +273,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         <div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.</div></div>
       </div>
     </div>
-
     <!-- WEBHOOK -->
     <div id="view-webhook" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Webhookit</div>
@@ -323,27 +296,22 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         <button class="btn-p" style="margin-top:4px" onclick="testWebhook()">⚡ Lähetä testiliidi</button>
       </div>
     </div>
-
     <!-- SETTINGS -->
     <div id="view-settings" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Agentti & API-asetukset</div>
       <div style="background:rgba(46,196,182,0.06);border:1px solid rgba(46,196,182,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--teal)">
-        🔒 API-avaimet asetetaan Render.com-palveluun Environment Variables -kohtaan. Ne eivät näy selaimessa — tämä on turvallisempaa.
+        🔒 API-avaimet asetetaan Render.com-palveluun Environment Variables -kohtaan.
       </div>
       <div class="settings-grid">
         <div class="settings-card">
           <div class="settings-card-ttl">🤖 Anthropic (AI) — Tila</div>
           <button class="btn-p" onclick="testAI()" style="margin-bottom:12px">🧪 Testaa AI-yhteys</button>
           <div class="status-row"><div class="status-dot" id="dot-ai" style="background:var(--muted)"></div><span id="status-ai">Ei testattu</span></div>
-          <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.7">
-            Avain asetetaan Renderissä:<br>
-            <strong style="color:var(--text)">ANTHROPIC_API_KEY</strong>
-          </div>
+          <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.7">Avain: <strong style="color:var(--text)">ANTHROPIC_API_KEY</strong></div>
         </div>
         <div class="settings-card">
-          <div class="settings-card-ttl">📱 Twilio (SMS) — Tila</div>
+          <div class="settings-card-ttl">📱 Twilio (SMS)</div>
           <div style="font-size:12px;color:var(--muted);line-height:1.7">
-            Asetettavat muuttujat Renderissä:<br>
             <strong style="color:var(--text)">TWILIO_SID</strong><br>
             <strong style="color:var(--text)">TWILIO_TOKEN</strong><br>
             <strong style="color:var(--text)">TWILIO_FROM</strong>
@@ -352,23 +320,20 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         <div class="settings-card">
           <div class="settings-card-ttl">📧 SendGrid (Email)</div>
           <div style="font-size:12px;color:var(--muted);line-height:1.7">
-            Asetettavat muuttujat Renderissä:<br>
             <strong style="color:var(--text)">SENDGRID_KEY</strong><br>
             <strong style="color:var(--text)">EMAIL_FROM</strong>
           </div>
         </div>
         <div class="settings-card">
-          <div class="settings-card-ttl">📋 Miten asetan muuttujat Renderissä?</div>
+          <div class="settings-card-ttl">📋 Render.com ohjeet</div>
           <div class="step-list" style="margin-top:4px">
-            <div class="step"><div class="step-num">1</div><div class="step-content">Mene <strong>render.com</strong> → kotiilma-crm palvelu</div></div>
-            <div class="step"><div class="step-num">2</div><div class="step-content">Klikkaa <strong>Environment</strong> vasemmalta</div></div>
-            <div class="step"><div class="step-num">3</div><div class="step-content">Lisää muuttujat nimellä ja arvolla</div></div>
-            <div class="step"><div class="step-num">4</div><div class="step-content">Klikkaa <strong>Save Changes</strong> → palvelu käynnistyy uudelleen</div></div>
+            <div class="step"><div class="step-num">1</div><div class="step-content">Mene <strong>render.com</strong> → kotiilma-crm</div></div>
+            <div class="step"><div class="step-num">2</div><div class="step-content">Klikkaa <strong>Environment</strong></div></div>
+            <div class="step"><div class="step-num">3</div><div class="step-content">Lisää muuttujat → <strong>Save Changes</strong></div></div>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </div>
 </div>
@@ -397,6 +362,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="f-ci" placeholder="Oulu" /></div>
         <div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="f-yr" placeholder="1985" type="number" /></div>
       </div>
+      <div class="fg"><label class="fl">Osoite</label><input class="fi" id="f-addr" placeholder="Kevätkatu 11" /></div>
       <div class="fg">
         <label class="fl">Nykyinen ilmanvaihto</label>
         <select class="fs" id="f-hv">
@@ -408,16 +374,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         </select>
       </div>
       <div class="fg"><label class="fl">Ongelma / Syy</label><textarea class="ft" id="f-pr" placeholder="Tunkkaisuus, yskiminen, korkeat laskut..."></textarea></div>
-      <div class="fg">
-        <label class="fl">Lähde</label>
-        <select class="fs" id="f-src">
-          <option value="meta">Meta / Facebook</option>
-          <option value="google">Google</option>
-          <option value="suositus">Suositus</option>
-          <option value="soitto">Soitto</option>
-          <option value="muu">Muu</option>
-        </select>
-      </div>
+      <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="f-src" placeholder="esim. ILP | Mökki | Kesä 2026" /></div>
     </div>
     <div class="modal-foot">
       <button class="btn-s" onclick="closeM('modal-add')">Peruuta</button>
@@ -425,6 +382,47 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
         <span id="save-spin" style="display:none" class="spin"></span>
         🤖 Tallenna & AI Kvalifioi
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-ttl">Muokkaa liidiä</div>
+      <button class="modal-close" onclick="closeM('modal-edit')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="fr">
+        <div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="e-fn" /></div>
+        <div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="e-ln" /></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="e-ph" /></div>
+        <div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="e-em" /></div>
+      </div>
+      <div class="fr">
+        <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="e-ci" /></div>
+        <div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="e-yr" type="number" /></div>
+      </div>
+      <div class="fg"><label class="fl">Osoite</label><input class="fi" id="e-addr" /></div>
+      <div class="fg">
+        <label class="fl">Nykyinen ilmanvaihto</label>
+        <select class="fs" id="e-hv">
+          <option value="">Ei tietoa</option>
+          <option value="painovoimainen">Painovoimainen</option>
+          <option value="huippuimuri">Huippuimuri</option>
+          <option value="koneellinen">Koneellinen poisto</option>
+          <option value="lto">LTO jo olemassa</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Ongelma / Syy</label><textarea class="ft" id="e-pr"></textarea></div>
+      <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="e-src" /></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-s" onclick="closeM('modal-edit')">Peruuta</button>
+      <button class="btn-p" onclick="saveEdit()">💾 Tallenna muutokset</button>
     </div>
   </div>
 </div>
@@ -455,35 +453,22 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 <script>
 const BASE_URL = 'https://kotiilma-crm-api.onrender.com';
 const API = (path) => `${BASE_URL}${path}`;
-
 let leads = [];
 let msgLog = JSON.parse(localStorage.getItem('ki-msgs') || '[]');
 
-// ═══════════════════════════════════════
-// INIT — hakee liidit palvelimelta
-// ═══════════════════════════════════════
 async function init() {
   document.getElementById('wh-url').textContent = `${BASE_URL}/webhook/meta`;
   await refreshLeads();
-  // Päivitä automaattisesti 30 sekunnin välein
   setInterval(refreshLeads, 30000);
 }
 
 async function refreshLeads() {
   try {
     const res = await fetch(API('/api/leads'));
-    if (res.ok) {
-      leads = await res.json();
-      render();
-    }
-  } catch(e) {
-    console.error('Virhe ladattaessa liidejä:', e);
-  }
+    if (res.ok) { leads = await res.json(); render(); }
+  } catch(e) { console.error('Virhe ladattaessa liidejä:', e); }
 }
 
-// ═══════════════════════════════════════
-// VIEWS
-// ═══════════════════════════════════════
 function showView(name, el) {
   ['pipeline','messages','webhook','settings'].forEach(v => {
     document.getElementById('view-'+v).style.display = v===name?'block':'none';
@@ -493,9 +478,6 @@ function showView(name, el) {
   if(name==='messages') renderMessages();
 }
 
-// ═══════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════
 function render() {
   const cats = {hot:[], warm:[], cold:[]};
   leads.forEach(l => { if(cats[l.category]) cats[l.category].push(l); });
@@ -538,6 +520,7 @@ function renderCol(id, items, cat) {
       <div class="card-btns" onclick="event.stopPropagation()">
         <button class="cbtn call" onclick="callLead('${l.phone}')">📞 Soita</button>
         <button class="cbtn" onclick="openDetail(${l.id})">👁 Tiedot</button>
+        <button class="cbtn" onclick="openEdit(${l.id})">✏️</button>
         <button class="cbtn" onclick="delLead(${l.id})">🗑</button>
       </div>
       <div class="card-time">${ago(l.createdAt)}</div>
@@ -545,21 +528,12 @@ function renderCol(id, items, cat) {
   `).join('');
 }
 
-// ═══════════════════════════════════════
-// AI
-// ═══════════════════════════════════════
 async function qualify(lead) {
   try {
-    const res = await fetch(API('/api/qualify'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lead })
-    });
+    const res = await fetch(API('/api/qualify'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({lead}) });
     if (res.ok) return await res.json();
     return fallbackQualify(lead);
-  } catch(e) {
-    return fallbackQualify(lead);
-  }
+  } catch(e) { return fallbackQualify(lead); }
 }
 
 function fallbackQualify(l) {
@@ -568,83 +542,51 @@ function fallbackQualify(l) {
   if(l.year && parseInt(l.year)<2000) score+=1;
   if(l.problem && l.problem.length>20) score+=1;
   const category = score>=8?'hot':score<=4?'cold':'warm';
-  return {
-    category, score,
-    reasoning: 'Automaattinen analyysi — AI ei ole yhteydessä.',
-    sms_text: `Hei ${l.firstname}! Kiitos yhteydenotosta Koti-ilmalle. Palataan sinulle pian! — Erika, 010 200 7561`,
-    followup_text: `Hei ${l.firstname}, sopiiko hetki puhua ilmanvaihtotilanteestasi? — Erika`
-  };
+  return { category, score, reasoning:'Automaattinen analyysi — AI ei ole yhteydessä.',
+    sms_text:`Hei ${l.firstname}! Kiitos yhteydenotosta Koti-ilmalle. Palataan sinulle pian! — Erika, 010 200 7561`,
+    followup_text:`Hei ${l.firstname}, sopiiko hetki puhua ilmanvaihtotilanteestasi? — Erika` };
 }
 
 async function sendSMS(to, body) {
   try {
-    const res = await fetch(API('/api/sms'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ to, message: body })
-    });
-    const data = await res.json();
-    return data.ok === true;
+    const res = await fetch(API('/api/sms'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({to, message:body}) });
+    return (await res.json()).ok === true;
   } catch(e) { return false; }
 }
 
 async function testAI() {
-  const dot = document.getElementById('dot-ai');
-  const status = document.getElementById('status-ai');
-  dot.style.background = 'var(--amber)';
-  status.textContent = 'Testataan...';
+  const dot = document.getElementById('dot-ai'), status = document.getElementById('status-ai');
+  dot.style.background = 'var(--amber)'; status.textContent = 'Testataan...';
   try {
-    const res = await fetch(API('/api/test-anthropic'), { method: 'POST' });
+    const res = await fetch(API('/api/test-anthropic'), {method:'POST'});
     const data = await res.json();
-    if (data.ok) {
-      dot.style.background = 'var(--green)';
-      status.textContent = '✓ AI toimii!';
-      toast('✅', 'AI toimii!', 'Qualifiointi käytössä');
-    } else {
-      dot.style.background = 'var(--red)';
-      status.textContent = 'Virhe: ' + (data.error || 'Tarkista API-avain Renderissä');
-    }
-  } catch(e) {
-    dot.style.background = 'var(--red)';
-    status.textContent = 'Yhteysvirhe palvelimeen';
-  }
+    if (data.ok) { dot.style.background='var(--green)'; status.textContent='✓ AI toimii!'; toast('✅','AI toimii!','Qualifiointi käytössä'); }
+    else { dot.style.background='var(--red)'; status.textContent='Virhe: '+(data.error||'Tarkista API-avain'); }
+  } catch(e) { dot.style.background='var(--red)'; status.textContent='Yhteysvirhe palvelimeen'; }
 }
 
-// ═══════════════════════════════════════
-// SAVE LEAD
-// ═══════════════════════════════════════
 function openAdd() { document.getElementById('modal-add').classList.add('open'); }
 
 async function saveLead() {
   const fn = v('f-fn'), ph = v('f-ph');
   if(!fn||!ph){ toast('⚠️','Täytä pakolliset kentät',''); return; }
-
   const l = {
-    id: Date.now(), firstname:fn, lastname:v('f-ln'), phone:ph,
-    email:v('f-em'), city:v('f-ci'), year:v('f-yr'),
+    id:Date.now(), firstname:fn, lastname:v('f-ln'), phone:ph,
+    email:v('f-em'), city:v('f-ci'), year:v('f-yr'), address:v('f-addr'),
     hvac:v('f-hv'), problem:v('f-pr'), source:v('f-src')||'manuaalinen',
     category:'warm', score:5, aiQualified:false, smsSent:false,
-    createdAt: new Date().toISOString()
+    createdAt:new Date().toISOString()
   };
-
   const btn = document.getElementById('btn-save');
   btn.disabled = true;
   document.getElementById('save-spin').style.display = 'inline-block';
-
-  const box = document.getElementById('ai-box');
-  const res = document.getElementById('ai-result');
+  const box = document.getElementById('ai-box'), res = document.getElementById('ai-result');
   box.style.display = 'block';
   document.getElementById('ai-spin').style.display = 'inline-block';
   res.innerHTML = `<div class="ai-thinking"><div class="spin"></div> AI analysoi liidiä...</div>`;
-
   const aiRes = await qualify(l);
-  l.category = aiRes.category;
-  l.score = aiRes.score;
-  l.reasoning = aiRes.reasoning;
-  l.smsText = aiRes.sms_text;
-  l.followupText = aiRes.followup_text;
-  l.aiQualified = true;
-
+  l.category=aiRes.category; l.score=aiRes.score; l.reasoning=aiRes.reasoning;
+  l.smsText=aiRes.sms_text; l.followupText=aiRes.followup_text; l.aiQualified=true;
   document.getElementById('ai-spin').style.display = 'none';
   const cl = CC[l.category];
   const lb = {hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
@@ -653,43 +595,19 @@ async function saveLead() {
     <div class="ai-text">${l.reasoning}</div>
     ${l.smsText?`<div class="ai-msg-lbl" style="margin-top:10px">📱 SMS:</div><div class="ai-msg-preview">${l.smsText}</div>`:''}
   `;
-
-  if (l.phone && l.smsText) {
-    const sent = await sendSMS(l.phone, l.smsText);
-    l.smsSent = sent;
-    logMsg(l, 'sms', l.smsText, sent);
-  }
-
-  // Tallenna palvelimelle
-  await fetch(API('/api/leads'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(l)
-  });
-
-  leads.push(l);
-  render();
-
-  btn.disabled = false;
-  document.getElementById('save-spin').style.display = 'none';
-
-  setTimeout(() => {
-    closeM('modal-add');
-    resetForm();
-    toast('🎯', `${fn} lisätty!`, `${lb[l.category]} — SMS ${l.smsSent?'lähetetty ✓':'jonossa'}`);
-  }, 1800);
+  if (l.phone && l.smsText) { const sent = await sendSMS(l.phone, l.smsText); l.smsSent=sent; logMsg(l,'sms',l.smsText,sent); }
+  await fetch(API('/api/leads'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(l) });
+  leads.push(l); render();
+  btn.disabled=false; document.getElementById('save-spin').style.display='none';
+  setTimeout(() => { closeM('modal-add'); resetForm(); toast('🎯',`${fn} lisätty!`,`${lb[l.category]} — SMS ${l.smsSent?'lähetetty ✓':'jonossa'}`); }, 1800);
 }
 
 function resetForm() {
-  ['f-fn','f-ln','f-ph','f-em','f-ci','f-yr','f-pr'].forEach(id => document.getElementById(id).value='');
+  ['f-fn','f-ln','f-ph','f-em','f-ci','f-yr','f-addr','f-pr','f-src'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('f-hv').value='';
-  document.getElementById('f-src').value='meta';
   document.getElementById('ai-box').style.display='none';
 }
 
-// ═══════════════════════════════════════
-// DETAIL
-// ═══════════════════════════════════════
 function openDetail(id) {
   const l = leads.find(x=>x.id===id); if(!l) return;
   document.getElementById('d-ttl').textContent = `${l.firstname} ${l.lastname||''}`;
@@ -705,9 +623,10 @@ function openDetail(id) {
         <div><div class="di-lbl">Puhelin</div><div class="di-val"><a href="tel:${l.phone}" style="color:var(--teal)">${l.phone}</a></div></div>
         ${l.email?`<div><div class="di-lbl">Sähköposti</div><div class="di-val">${l.email}</div></div>`:''}
         ${l.city?`<div><div class="di-lbl">Kaupunki</div><div class="di-val">${l.city}</div></div>`:''}
+        ${l.address?`<div><div class="di-lbl">Osoite</div><div class="di-val">${l.address}</div></div>`:''}
         ${l.year?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${l.year}</div></div>`:''}
         ${l.hvac?`<div><div class="di-lbl">Ilmanvaihto</div><div class="di-val">${l.hvac}</div></div>`:''}
-        <div><div class="di-lbl">Lähde</div><div class="di-val">${l.source||'—'}</div></div>
+        <div><div class="di-lbl">Lähde / Mainos</div><div class="di-val">${l.source||'—'}</div></div>
         <div><div class="di-lbl">Lisätty</div><div class="di-val">${new Date(l.createdAt).toLocaleDateString('fi-FI')}</div></div>
       </div>
     </div>
@@ -730,15 +649,9 @@ function openDetail(id) {
   document.getElementById('modal-detail').classList.add('open');
 }
 
-// ═══════════════════════════════════════
-// MESSAGES
-// ═══════════════════════════════════════
 function logMsg(lead, type, content, sent) {
-  msgLog.push({ id: Date.now()+Math.random(), leadId:lead.id,
-    leadName:`${lead.firstname} ${lead.lastname||''}`,
-    phone:lead.phone, type, content, sent,
-    sentAt: new Date().toISOString()
-  });
+  msgLog.push({ id:Date.now()+Math.random(), leadId:lead.id, leadName:`${lead.firstname} ${lead.lastname||''}`,
+    phone:lead.phone, type, content, sent, sentAt:new Date().toISOString() });
   localStorage.setItem('ki-msgs', JSON.stringify(msgLog));
   document.getElementById('nb-messages').textContent = msgLog.length;
 }
@@ -761,46 +674,65 @@ function renderMessages() {
   `).join('');
 }
 
-// ═══════════════════════════════════════
-// WEBHOOK TEST
-// ═══════════════════════════════════════
 async function testWebhook() {
   toast('⚡','Lähetetään testiliidi...','');
   try {
-    const res = await fetch(API('/webhook/meta'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: v('t-fn') + ' ' + v('t-ln'),
-        phone: v('t-ph'),
-        city: v('t-ci'),
-        problem: v('t-pr'),
-        source: 'Webhook testi'
-      })
-    });
-    if (res.ok) {
-      await refreshLeads();
-      showView('pipeline', document.querySelector('.nav-item'));
-      toast('✅','Testiliidi lisätty!','Tarkista pipeline');
-    }
-  } catch(e) {
-    toast('❌','Virhe','Tarkista yhteys');
-  }
+    const res = await fetch(API('/webhook/meta'), { method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ name:v('t-fn')+' '+v('t-ln'), phone:v('t-ph'), city:v('t-ci'), problem:v('t-pr'), source:'Webhook testi' }) });
+    if (res.ok) { await refreshLeads(); showView('pipeline', document.querySelector('.nav-item')); toast('✅','Testiliidi lisätty!','Tarkista pipeline'); }
+  } catch(e) { toast('❌','Virhe','Tarkista yhteys'); }
 }
 
-// ═══════════════════════════════════════
-// ACTIONS
-// ═══════════════════════════════════════
+
+let editingId = null;
+
+function openEdit(id) {
+  const l = leads.find(x=>x.id===id); if(!l) return;
+  editingId = id;
+  document.getElementById('e-fn').value = l.firstname||'';
+  document.getElementById('e-ln').value = l.lastname||'';
+  document.getElementById('e-ph').value = l.phone||'';
+  document.getElementById('e-em').value = l.email||'';
+  document.getElementById('e-ci').value = l.city||'';
+  document.getElementById('e-yr').value = l.year||'';
+  document.getElementById('e-addr').value = l.address||'';
+  document.getElementById('e-hv').value = l.hvac||'';
+  document.getElementById('e-pr').value = l.problem||'';
+  document.getElementById('e-src').value = l.source||'';
+  document.getElementById('modal-edit').classList.add('open');
+}
+
+async function saveEdit() {
+  const fn = document.getElementById('e-fn').value.trim();
+  const ph = document.getElementById('e-ph').value.trim();
+  if(!fn||!ph){ toast('⚠️','Täytä pakolliset kentät',''); return; }
+  const updates = {
+    id: editingId,
+    firstname: fn,
+    lastname: document.getElementById('e-ln').value.trim(),
+    phone: ph,
+    email: document.getElementById('e-em').value.trim(),
+    city: document.getElementById('e-ci').value.trim(),
+    year: document.getElementById('e-yr').value.trim(),
+    address: document.getElementById('e-addr').value.trim(),
+    hvac: document.getElementById('e-hv').value,
+    problem: document.getElementById('e-pr').value.trim(),
+    source: document.getElementById('e-src').value.trim(),
+  };
+  await fetch(API('/api/leads/update'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(updates) });
+  const idx = leads.findIndex(x=>x.id===editingId);
+  if(idx>-1) leads[idx] = {...leads[idx], ...updates};
+  render();
+  closeM('modal-edit');
+  toast('✅','Tallennettu!','');
+}
+
 function callLead(ph) { window.location.href=`tel:${ph}`; }
 
 async function move(id, cat) {
   const l=leads.find(x=>x.id===id); if(!l) return;
   l.category=cat;
-  await fetch(API('/api/leads/update'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id, category: cat })
-  });
+  await fetch(API('/api/leads/update'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id, category:cat}) });
   render();
   const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
   toast('✅','Siirretty',lb[cat]);
@@ -808,52 +740,33 @@ async function move(id, cat) {
 
 async function delLead(id) {
   if(!confirm('Poistetaanko?')) return;
-  await fetch(API('/api/leads/delete'), {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id })
-  });
-  leads=leads.filter(x=>x.id!==id);
-  render();
+  await fetch(API('/api/leads/delete'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id}) });
+  leads=leads.filter(x=>x.id!==id); render();
 }
 
 async function clearAll() {
   if(!confirm('Poistetaanko kaikki?')) return;
   for (const l of leads) {
-    await fetch(API('/api/leads/delete'), {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: l.id })
-    });
+    await fetch(API('/api/leads/delete'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:l.id}) });
   }
-  leads=[];
-  render();
+  leads=[]; render();
 }
 
-function copyUrl() {
-  navigator.clipboard.writeText(document.getElementById('wh-url').textContent);
-  toast('📋','Kopioitu!','');
-}
+function copyUrl() { navigator.clipboard.writeText(document.getElementById('wh-url').textContent); toast('📋','Kopioitu!',''); }
 
-// ═══════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════
 function v(id){ return document.getElementById(id)?.value?.trim()||''; }
 function closeM(id){ document.getElementById(id).classList.remove('open'); }
 function ago(d){
   const m=Math.floor((Date.now()-new Date(d))/60000);
-  if(m<1) return 'Juuri nyt';
-  if(m<60) return m+'min sitten';
-  const h=Math.floor(m/60);
-  if(h<24) return h+'h sitten';
+  if(m<1) return 'Juuri nyt'; if(m<60) return m+'min sitten';
+  const h=Math.floor(m/60); if(h<24) return h+'h sitten';
   return Math.floor(h/24)+'pv sitten';
 }
 function toast(ico,ttl,sub){
   document.getElementById('t-ico').textContent=ico;
   document.getElementById('t-ttl').textContent=ttl;
   document.getElementById('t-sub').textContent=sub;
-  const t=document.getElementById('toast');
-  t.classList.add('show');
+  const t=document.getElementById('toast'); t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),3500);
 }
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
