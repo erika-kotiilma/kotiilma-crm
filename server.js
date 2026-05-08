@@ -311,7 +311,7 @@ Palauta VAIN tämä JSON ilman mitään muuta tekstiä:
         hvac_features: body.hvac_features || getField(fd, 'ilmalämpöpumpun_halutut_ominaisuudet') || '',
         cleaning_timing: body.cleaning_timing || getField(fd, 'millon_puhdistus_olisi_ajankohtainen') || '',
         house_type: body.house_type || getField(fd, 'talotyyppi') || '',
-        floor_area: body.floor_area || getField(fd, 'pinta-ala') || '',
+        floor_area: body.floor_area || getField(fd, 'pinta-ala') || getField(fd, 'pinta_ala') || '',
         floors: body.floors || getField(fd, 'kerrokset') || '',
         vents: body.vents || getField(fd, 'venttiilien_määrä') || '',
         category: 'warm',
