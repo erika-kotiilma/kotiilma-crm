@@ -206,7 +206,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Webhookit</div>
       <div class="webhook-card"><div class="webhook-card-ttl">🔗 Meta & Google Ads Webhook URL</div><div class="url-box" id="wh-url">Ladataan...</div><button class="copy-btn" onclick="copyUrl()">📋 Kopioi</button><div class="hint-box" style="margin-top:12px">💡 Sama URL toimii sekä Meta- että Google Ads -liideille.</div></div>
       <div class="webhook-card"><div class="webhook-card-ttl">🧪 Testaa manuaalisesti</div>
-        <div class="fr"><div class="fg"><label class="fl">Etunimi</label><input class="fi" id="t-fn" value="Testiliidi"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="t-ln" value="Virtanen"/></div><div class="fg"><label class="fl">Puhelin</label><input class="fi" id="t-ph" value="040 000 0000"/></div><div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="t-ci" value="Oulu"/></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Etunimi</label><input class="fi" id="t-fn" value="Testiliidi"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="t-ln" value="Virtanen"/></div><div class="fg"><label class="fl">Puhelin</label><input class="fi" id="t-ph" value="040 000 0000"/></div><div class="fg"><label class="fl">Postinumero</label><input class="fi" id="t-ci" value="90100"/></div></div>
         <div class="fg"><label class="fl">Ongelma</label><input class="fi" id="t-pr" value="Tunkkainen ilma"/></div>
         <button class="btn-p" style="margin-top:4px" onclick="testWebhook()">⚡ Lähetä testiliidi</button>
       </div>
@@ -233,7 +233,8 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
       <div class="ai-box" id="ai-box" style="display:none"><div class="ai-box-ttl"><div class="spin" id="ai-spin" style="display:none"></div> AI Kvalifiointi</div><div id="ai-result"></div></div>
       <div class="fr"><div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="f-fn" placeholder="Matti"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="f-ln" placeholder="Virtanen"/></div></div>
       <div class="fr"><div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="f-ph" placeholder="040 123 4567"/></div><div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="f-em" placeholder="matti@email.fi"/></div></div>
-      <div class="fr"><div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="f-ci" placeholder="Oulu"/></div><div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="f-yr" placeholder="1985" type="number"/></div></div>
+      <!-- POSTINUMERO + POSTITOIMIPAIKKA (kaupunki poistettu) -->
+      <div class="fr"><div class="fg"><label class="fl">Postinumero</label><input class="fi" id="f-zip" placeholder="90100" maxlength="5"/></div><div class="fg"><label class="fl">Postitoimipaikka</label><input class="fi" id="f-city" placeholder="Oulu"/></div></div>
       <div class="fg"><label class="fl">Osoite</label><input class="fi" id="f-addr" placeholder="Kevätkatu 11"/></div>
       <div class="fg">
         <label class="fl">Palvelu</label>
@@ -245,6 +246,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="muu">Muu</option>
         </select>
       </div>
+      <!-- ILP: milloin asennus -->
       <div class="timing-box" id="f-timing-ilp" style="display:none">
         <label class="fl">⏰ Milloin ILP-asennus olisi ajankohtainen?</label>
         <select class="fs" id="f-install-timing">
@@ -255,6 +257,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
         </select>
       </div>
+      <!-- Puhdistus: milloin -->
       <div class="timing-box" id="f-timing-puh" style="display:none">
         <label class="fl">⏰ Milloin puhdistus olisi ajankohtainen?</label>
         <select class="fs" id="f-cleaning-timing">
@@ -263,6 +266,21 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="touko_kesakuussa">📅 Touko-kesäkuussa</option>
           <option value="syksylla">🍂 Syksyllä</option>
           <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
+        </select>
+      </div>
+      <!-- IV-saneeraus: talon vuosi -->
+      <div class="timing-box" id="f-timing-iv" style="display:none">
+        <label class="fl">🏠 Talon rakennusvuosi</label>
+        <select class="fs" id="f-yr-iv">
+          <option value="">Valitse rakennusvuosi...</option>
+          <option value="ennen_1960">Ennen 1960</option>
+          <option value="1960_1969">1960–1969</option>
+          <option value="1970_1979">1970–1979</option>
+          <option value="1980_1989">1980–1989</option>
+          <option value="1990_1999">1990–1999</option>
+          <option value="2000_2009">2000–2009</option>
+          <option value="2010_2019">2010–2019</option>
+          <option value="2020_">2020 tai uudempi</option>
         </select>
       </div>
       <div class="fg"><label class="fl">Lisätietoja</label><textarea class="ft" id="f-pr" placeholder="Esim. omakotitalo, viilennys, asennus mahdollisimman pian..."></textarea></div>
@@ -279,7 +297,8 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
     <div class="modal-body">
       <div class="fr"><div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="e-fn"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="e-ln"/></div></div>
       <div class="fr"><div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="e-ph"/></div><div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="e-em"/></div></div>
-      <div class="fr"><div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="e-ci"/></div><div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="e-yr" type="number"/></div></div>
+      <!-- POSTINUMERO + POSTITOIMIPAIKKA -->
+      <div class="fr"><div class="fg"><label class="fl">Postinumero</label><input class="fi" id="e-zip" maxlength="5"/></div><div class="fg"><label class="fl">Postitoimipaikka</label><input class="fi" id="e-city"/></div></div>
       <div class="fg"><label class="fl">Osoite</label><input class="fi" id="e-addr"/></div>
       <div class="fg">
         <label class="fl">Palvelu</label>
@@ -311,6 +330,21 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
         </select>
       </div>
+      <!-- IV-saneeraus: talon vuosi -->
+      <div class="timing-box" id="e-timing-iv" style="display:none">
+        <label class="fl">🏠 Talon rakennusvuosi</label>
+        <select class="fs" id="e-yr-iv">
+          <option value="">Valitse rakennusvuosi...</option>
+          <option value="ennen_1960">Ennen 1960</option>
+          <option value="1960_1969">1960–1969</option>
+          <option value="1970_1979">1970–1979</option>
+          <option value="1980_1989">1980–1989</option>
+          <option value="1990_1999">1990–1999</option>
+          <option value="2000_2009">2000–2009</option>
+          <option value="2010_2019">2010–2019</option>
+          <option value="2020_">2020 tai uudempi</option>
+        </select>
+      </div>
       <div class="fg"><label class="fl">Ongelma / Syy</label><textarea class="ft" id="e-pr"></textarea></div>
       <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="e-src"/></div>
     </div>
@@ -335,9 +369,6 @@ const API = (path) => `${BASE_URL}${path}`;
 let leads = [];
 let msgLog = JSON.parse(localStorage.getItem('ki-msgs') || '[]');
 
-// ── Timing → kategoria-logiikka ─────────────────────────────────
-// ILP:       mahdollisimman_pian=hot  kesakuussa=warm  syksylla=cold  vain_tiedustelu=cold
-// Puhdistus: mahdollisimman_pian=hot  touko_kesakuussa=warm  syksylla=cold  vain_tiedustelu=cold
 const ILP_CAT = {
   mahdollisimman_pian: {category:'hot',  score:9},
   kesakuussa:          {category:'warm', score:6},
@@ -357,6 +388,16 @@ const TIMING_LABELS = {
   syksylla:'🍂 Syksyllä',
   vain_tiedustelu:'💬 Vain tiedustelu'
 };
+const YEAR_LABELS = {
+  ennen_1960:'Ennen 1960',
+  '1960_1969':'1960–1969',
+  '1970_1979':'1970–1979',
+  '1980_1989':'1980–1989',
+  '1990_1999':'1990–1999',
+  '2000_2009':'2000–2009',
+  '2010_2019':'2010–2019',
+  '2020_':'2020 tai uudempi'
+};
 
 function timingToCategory(service, timing) {
   if (service === 'ILP')       return ILP_CAT[timing] || null;
@@ -364,13 +405,14 @@ function timingToCategory(service, timing) {
   return null;
 }
 
-// ── Näytä/piilota timing-valikko palvelun valinnan mukaan ────────
 function onServiceChange(prefix) {
   const val = document.getElementById(prefix+'-hv').value;
-  document.getElementById(prefix+'-timing-ilp').style.display = val==='ILP'       ? 'block' : 'none';
-  document.getElementById(prefix+'-timing-puh').style.display = val==='Puhdistus' ? 'block' : 'none';
-  if (val !== 'ILP')       document.getElementById(prefix+'-install-timing').value  = '';
-  if (val !== 'Puhdistus') document.getElementById(prefix+'-cleaning-timing').value = '';
+  document.getElementById(prefix+'-timing-ilp').style.display = val==='ILP'        ? 'block' : 'none';
+  document.getElementById(prefix+'-timing-puh').style.display = val==='Puhdistus'  ? 'block' : 'none';
+  document.getElementById(prefix+'-timing-iv').style.display  = val==='IV-saneeraus'? 'block' : 'none';
+  if (val !== 'ILP')        document.getElementById(prefix+'-install-timing').value = '';
+  if (val !== 'Puhdistus')  document.getElementById(prefix+'-cleaning-timing').value = '';
+  if (val !== 'IV-saneeraus') document.getElementById(prefix+'-yr-iv').value = '';
 }
 
 async function init() {
@@ -423,12 +465,13 @@ function renderCol(id, items, cat) {
   el.innerHTML = items.sort((a,b)=>b.score-a.score).map(l => {
     const timing = l.install_timing||l.cleaning_timing||'';
     const timingLabel = TIMING_LABELS[timing]||'';
+    const locationStr = [l.zip, l.city_name].filter(Boolean).join(' ') || l.city || '';
     return `
     <div class="card" style="--cc:${CC[cat]}" onclick="openDetail(${l.id})">
       <div class="card-top"><div class="card-name">${l.firstname} ${l.lastname||''}</div><div class="score-pill s-${cat}">${l.score}/10</div></div>
       <div class="card-info">
         <div class="card-row">📞 <a href="tel:${l.phone}" style="color:inherit;text-decoration:none" onclick="event.stopPropagation()">${l.phone}</a></div>
-        ${l.city?`<div class="card-row">📍 ${l.city}</div>`:''}
+        ${locationStr?`<div class="card-row">📍 ${locationStr}</div>`:''}
         ${l.source?`<div class="card-row">📌 ${l.source}</div>`:''}
         ${timingLabel?`<div class="card-row">⏰ ${timingLabel}</div>`:''}
       </div>
@@ -464,7 +507,7 @@ function fallbackQualify(l) {
       followup_text:`Hei ${l.firstname}, sopiiko hetki puhua ilmanvaihtotilanteestasi? — Erika`};
   }
   let score=5;
-  if(l.year&&parseInt(l.year)<2000) score+=1;
+  if(l.house_year) score+=1;
   if(l.problem&&l.problem.length>20) score+=1;
   const category=score>=8?'hot':score<=4?'cold':'warm';
   return{category,score,reasoning:'Automaattinen analyysi — AI ei ole yhteydessä.',
@@ -491,14 +534,19 @@ async function saveLead() {
   const fn=v('f-fn'),ph=v('f-ph');
   if(!fn||!ph){toast('⚠️','Täytä pakolliset kentät','');return;}
   const hvacVal=v('f-hv');
-  const installTiming  = hvacVal==='ILP'       ? v('f-install-timing')  : '';
-  const cleaningTiming = hvacVal==='Puhdistus'  ? v('f-cleaning-timing') : '';
+  const installTiming  = hvacVal==='ILP'        ? v('f-install-timing')  : '';
+  const cleaningTiming = hvacVal==='Puhdistus'   ? v('f-cleaning-timing') : '';
+  const houseYear      = hvacVal==='IV-saneeraus' ? v('f-yr-iv')          : '';
   const precat = timingToCategory(hvacVal, installTiming||cleaningTiming);
   const l={
     id:Date.now(),firstname:fn,lastname:v('f-ln'),phone:ph,
-    email:v('f-em'),city:v('f-ci'),year:v('f-yr'),address:v('f-addr'),
+    email:v('f-em'),
+    zip:v('f-zip'),city_name:v('f-city'),
+    city:v('f-city'), // backward compat
+    address:v('f-addr'),
     hvac:hvacVal,problem:v('f-pr'),source:v('f-src')||'manuaalinen',
     install_timing:installTiming,cleaning_timing:cleaningTiming,
+    house_year:houseYear,
     category:precat?precat.category:'warm',score:precat?precat.score:5,
     aiQualified:false,smsSent:false,createdAt:new Date().toISOString()
   };
@@ -521,12 +569,14 @@ async function saveLead() {
 }
 
 function resetForm() {
-  ['f-fn','f-ln','f-ph','f-em','f-ci','f-yr','f-addr','f-pr','f-src'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['f-fn','f-ln','f-ph','f-em','f-zip','f-city','f-addr','f-pr','f-src'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('f-hv').value='';
   document.getElementById('f-install-timing').value='';
   document.getElementById('f-cleaning-timing').value='';
+  document.getElementById('f-yr-iv').value='';
   document.getElementById('f-timing-ilp').style.display='none';
   document.getElementById('f-timing-puh').style.display='none';
+  document.getElementById('f-timing-iv').style.display='none';
   document.getElementById('ai-box').style.display='none';
 }
 
@@ -538,21 +588,23 @@ function openDetail(id) {
   const lm=msgLog.filter(m=>m.leadId===l.id);
   const timing=l.install_timing||l.cleaning_timing||'';
   const timingLabel=TIMING_LABELS[timing]||'';
+  const locationStr=[l.zip,l.city_name].filter(Boolean).join(' ')||l.city||'';
+  const houseYearLabel=l.house_year?YEAR_LABELS[l.house_year]||l.house_year:'';
   document.getElementById('d-body').innerHTML=`
     <div class="dsec"><div class="dsec-ttl">Yhteystiedot</div><div class="dgrid">
       <div><div class="di-lbl">Nimi</div><div class="di-val">${l.firstname} ${l.lastname||''}</div></div>
       <div><div class="di-lbl">Puhelin</div><div class="di-val"><a href="tel:${l.phone}" style="color:var(--teal)">${l.phone}</a></div></div>
       ${l.email?`<div><div class="di-lbl">Sähköposti</div><div class="di-val">${l.email}</div></div>`:''}
-      ${l.city?`<div><div class="di-lbl">Kaupunki</div><div class="di-val">${l.city}</div></div>`:''}
+      ${l.zip?`<div><div class="di-lbl">Postinumero</div><div class="di-val">${l.zip}</div></div>`:''}
+      ${(l.city_name||l.city)?`<div><div class="di-lbl">Postitoimipaikka</div><div class="di-val">${l.city_name||l.city}</div></div>`:''}
       ${l.address?`<div><div class="di-lbl">Osoite</div><div class="di-val">${l.address}</div></div>`:''}
-      ${l.year?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${l.year}</div></div>`:''}
       ${l.hvac?`<div><div class="di-lbl">Palvelu</div><div class="di-val">${l.hvac}</div></div>`:''}
       ${timingLabel?`<div><div class="di-lbl">Ajankohtaisuus</div><div class="di-val" style="color:var(--teal)">${timingLabel}</div></div>`:''}
+      ${houseYearLabel?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${houseYearLabel}</div></div>`:''}
       <div><div class="di-lbl">Lähde / Mainos</div><div class="di-val">${l.source||'—'}</div></div>
       <div><div class="di-lbl">Lisätty</div><div class="di-val">${new Date(l.createdAt).toLocaleDateString('fi-FI')}</div></div>
     </div></div>
     ${l.problem?`<div class="dsec"><div class="dsec-ttl">Lisätiedot</div><div style="font-size:13px;line-height:1.6">${l.problem}</div></div>`:''}
-    ${(l.install_timing||l.cleaning_timing||l.property_type||l.property_size||l.hvac_features||l.house_type||l.floor_area||l.floors||l.vents)?`<div class="dsec"><div class="dsec-ttl">📋 Lomakkeen vastaukset</div><div class="dgrid">${l.install_timing?`<div><div class="di-lbl">Milloin asennus</div><div class="di-val" style="color:var(--teal)">${TIMING_LABELS[l.install_timing]||l.install_timing}</div></div>`:''} ${l.cleaning_timing?`<div><div class="di-lbl">Milloin puhdistus</div><div class="di-val" style="color:var(--teal)">${TIMING_LABELS[l.cleaning_timing]||l.cleaning_timing}</div></div>`:''} ${l.property_type?`<div><div class="di-lbl">Kiinteistön tyyppi</div><div class="di-val">${l.property_type}</div></div>`:''} ${l.property_size?`<div><div class="di-lbl">Kiinteistön koko</div><div class="di-val">${l.property_size}</div></div>`:''} ${l.hvac_features?`<div><div class="di-lbl">Halutut ominaisuudet</div><div class="di-val">${l.hvac_features}</div></div>`:''} ${l.house_type?`<div><div class="di-lbl">Talotyyppi</div><div class="di-val">${l.house_type}</div></div>`:''} ${l.floor_area?`<div><div class="di-lbl">Pinta-ala</div><div class="di-val">${l.floor_area}</div></div>`:''} ${l.floors?`<div><div class="di-lbl">Kerrokset</div><div class="di-val">${l.floors}</div></div>`:''} ${l.vents?`<div><div class="di-lbl">Venttiilien määrä</div><div class="di-val">${l.vents}</div></div>`:''}</div></div>`:''}
     <div class="dsec"><div class="dsec-ttl">AI Analyysi</div>
       <div class="cat-badge" style="background:${cl}18;color:${cl};border:1px solid ${cl}35">${lb[l.category]} — ${l.score}/10</div>
       <div style="font-size:12px;color:var(--muted);margin-top:5px">${l.reasoning||'—'}</div>
@@ -600,18 +652,19 @@ function openEdit(id){
   document.getElementById('e-ln').value=l.lastname||'';
   document.getElementById('e-ph').value=l.phone||'';
   document.getElementById('e-em').value=l.email||'';
-  document.getElementById('e-ci').value=l.city||'';
-  document.getElementById('e-yr').value=l.year||'';
+  document.getElementById('e-zip').value=l.zip||'';
+  document.getElementById('e-city').value=l.city_name||l.city||'';
   document.getElementById('e-addr').value=l.address||'';
   document.getElementById('e-hv').value=l.hvac||'';
   document.getElementById('e-pr').value=l.problem||'';
   document.getElementById('e-src').value=l.source||'';
-  // Näytä oikea timing-valikko ja esitäytä aiempi arvo
   const hvacV=l.hvac||'';
   document.getElementById('e-timing-ilp').style.display=hvacV==='ILP'?'block':'none';
   document.getElementById('e-timing-puh').style.display=hvacV==='Puhdistus'?'block':'none';
+  document.getElementById('e-timing-iv').style.display=hvacV==='IV-saneeraus'?'block':'none';
   document.getElementById('e-install-timing').value=l.install_timing||'';
   document.getElementById('e-cleaning-timing').value=l.cleaning_timing||'';
+  document.getElementById('e-yr-iv').value=l.house_year||'';
   document.getElementById('modal-edit').classList.add('open');
 }
 
@@ -620,16 +673,20 @@ async function saveEdit(){
   const ph=document.getElementById('e-ph').value.trim();
   if(!fn||!ph){toast('⚠️','Täytä pakolliset kentät','');return;}
   const hvacEditVal=document.getElementById('e-hv').value;
-  const installTiming  = hvacEditVal==='ILP'       ? document.getElementById('e-install-timing').value  : '';
-  const cleaningTiming = hvacEditVal==='Puhdistus'  ? document.getElementById('e-cleaning-timing').value : '';
+  const installTiming  = hvacEditVal==='ILP'        ? document.getElementById('e-install-timing').value  : '';
+  const cleaningTiming = hvacEditVal==='Puhdistus'   ? document.getElementById('e-cleaning-timing').value : '';
+  const houseYear      = hvacEditVal==='IV-saneeraus' ? document.getElementById('e-yr-iv').value          : '';
   const precat=timingToCategory(hvacEditVal,installTiming||cleaningTiming);
   const lead=leads.find(x=>x.id===editingId)||{};
   const updates={
     id:editingId,firstname:fn,lastname:document.getElementById('e-ln').value.trim(),
     phone:ph,email:document.getElementById('e-em').value.trim(),
-    city:document.getElementById('e-ci').value.trim(),year:document.getElementById('e-yr').value.trim(),
+    zip:document.getElementById('e-zip').value.trim(),
+    city_name:document.getElementById('e-city').value.trim(),
+    city:document.getElementById('e-city').value.trim(),
     address:document.getElementById('e-addr').value.trim(),hvac:hvacEditVal,
     install_timing:installTiming,cleaning_timing:cleaningTiming,
+    house_year:houseYear,
     problem:document.getElementById('e-pr').value.trim(),source:document.getElementById('e-src').value.trim(),
     category:precat?precat.category:(lead.category||'warm'),
     score:precat?precat.score:(lead.score||5),
