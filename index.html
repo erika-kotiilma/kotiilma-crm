@@ -157,6 +157,13 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 @media(max-width:900px){.sidebar{display:none}.pipeline{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.settings-grid{grid-template-columns:1fr}}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.check-group{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.check-item{display:flex;align-items:center;gap:7px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:7px 12px;cursor:pointer;transition:all .15s;user-select:none}
+.check-item:hover{border-color:var(--teal)}
+.check-item input[type=checkbox]{width:15px;height:15px;accent-color:var(--teal);cursor:pointer;flex-shrink:0}
+.check-item span{font-size:12px;color:var(--muted);font-weight:500}
+.check-item:has(input:checked){border-color:rgba(46,196,182,0.5);background:rgba(46,196,182,0.06)}
+.check-item:has(input:checked) span{color:var(--teal)}
 </style>
 </head>
 <body>
@@ -283,6 +290,25 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="2020_">2020 tai uudempi</option>
         </select>
       </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Yhteydenotot</label>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" id="f-ch-welcome"/><span>👋 Tervetuloa-viesti</span></label>
+            <label class="check-item"><input type="checkbox" id="f-ch-call"/><span>📞 Soitto</span></label>
+            <label class="check-item"><input type="checkbox" id="f-ch-email"/><span>✉️ Sähköposti</span></label>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Diili-status</label>
+          <select class="fs" id="f-deal">
+            <option value="">Ei statusta</option>
+            <option value="kauppa">🟢 Kauppa</option>
+            <option value="tarjous">🟡 Tarjous</option>
+            <option value="menetetty">🔴 Menetetty</option>
+          </select>
+        </div>
+      </div>
       <div class="fg"><label class="fl">Lisätietoja</label><textarea class="ft" id="f-pr" placeholder="Esim. omakotitalo, viilennys, asennus mahdollisimman pian..."></textarea></div>
       <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="f-src" placeholder="esim. ILP | Mökki | Kesä 2026"/></div>
     </div>
@@ -344,6 +370,25 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="2010_2019">2010–2019</option>
           <option value="2020_">2020 tai uudempi</option>
         </select>
+      </div>
+      <div class="fr">
+        <div class="fg">
+          <label class="fl">Yhteydenotot</label>
+          <div class="check-group">
+            <label class="check-item"><input type="checkbox" id="e-ch-welcome"/><span>👋 Tervetuloa-viesti</span></label>
+            <label class="check-item"><input type="checkbox" id="e-ch-call"/><span>📞 Soitto</span></label>
+            <label class="check-item"><input type="checkbox" id="e-ch-email"/><span>✉️ Sähköposti</span></label>
+          </div>
+        </div>
+        <div class="fg">
+          <label class="fl">Diili-status</label>
+          <select class="fs" id="e-deal">
+            <option value="">Ei statusta</option>
+            <option value="kauppa">🟢 Kauppa</option>
+            <option value="tarjous">🟡 Tarjous</option>
+            <option value="menetetty">🔴 Menetetty</option>
+          </select>
+        </div>
       </div>
       <div class="fg"><label class="fl">Ongelma / Syy</label><textarea class="ft" id="e-pr"></textarea></div>
       <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="e-src"/></div>
@@ -547,6 +592,10 @@ async function saveLead() {
     hvac:hvacVal,problem:v('f-pr'),source:v('f-src')||'manuaalinen',
     install_timing:installTiming,cleaning_timing:cleaningTiming,
     house_year:houseYear,
+    contacts_welcome:document.getElementById('f-ch-welcome').checked,
+    contacts_call:document.getElementById('f-ch-call').checked,
+    contacts_email:document.getElementById('f-ch-email').checked,
+    deal_status:v('f-deal'),
     category:precat?precat.category:'warm',score:precat?precat.score:5,
     aiQualified:false,smsSent:false,createdAt:new Date().toISOString()
   };
@@ -577,6 +626,10 @@ function resetForm() {
   document.getElementById('f-timing-ilp').style.display='none';
   document.getElementById('f-timing-puh').style.display='none';
   document.getElementById('f-timing-iv').style.display='none';
+  document.getElementById('f-ch-welcome').checked=false;
+  document.getElementById('f-ch-call').checked=false;
+  document.getElementById('f-ch-email').checked=false;
+  document.getElementById('f-deal').value='';
   document.getElementById('ai-box').style.display='none';
 }
 
@@ -601,6 +654,8 @@ function openDetail(id) {
       ${l.hvac?`<div><div class="di-lbl">Palvelu</div><div class="di-val">${l.hvac}</div></div>`:''}
       ${timingLabel?`<div><div class="di-lbl">Ajankohtaisuus</div><div class="di-val" style="color:var(--teal)">${timingLabel}</div></div>`:''}
       ${houseYearLabel?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${houseYearLabel}</div></div>`:''}
+      ${l.deal_status?`<div><div class="di-lbl">Diili-status</div><div class="di-val">${l.deal_status==='kauppa'?'🟢 Kauppa':l.deal_status==='tarjous'?'🟡 Tarjous':'🔴 Menetetty'}</div></div>`:''}
+      ${(l.contacts_welcome||l.contacts_call||l.contacts_email)?`<div style="grid-column:1/-1"><div class="di-lbl">Yhteydenotot</div><div class="di-val" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:3px">${l.contacts_welcome?'<span style="background:rgba(46,196,182,0.1);color:var(--teal);padding:2px 9px;border-radius:5px;font-size:11px">👋 Tervetuloa-viesti</span>':''}${l.contacts_call?'<span style="background:rgba(46,196,182,0.1);color:var(--teal);padding:2px 9px;border-radius:5px;font-size:11px">📞 Soitto</span>':''}${l.contacts_email?'<span style="background:rgba(46,196,182,0.1);color:var(--teal);padding:2px 9px;border-radius:5px;font-size:11px">✉️ Sähköposti</span>':''}</div></div>`:''}
       <div><div class="di-lbl">Lähde / Mainos</div><div class="di-val">${l.source||'—'}</div></div>
       <div><div class="di-lbl">Lisätty</div><div class="di-val">${new Date(l.createdAt).toLocaleDateString('fi-FI')}</div></div>
     </div></div>
@@ -665,6 +720,10 @@ function openEdit(id){
   document.getElementById('e-install-timing').value=l.install_timing||'';
   document.getElementById('e-cleaning-timing').value=l.cleaning_timing||'';
   document.getElementById('e-yr-iv').value=l.house_year||'';
+  document.getElementById('e-ch-welcome').checked=!!l.contacts_welcome;
+  document.getElementById('e-ch-call').checked=!!l.contacts_call;
+  document.getElementById('e-ch-email').checked=!!l.contacts_email;
+  document.getElementById('e-deal').value=l.deal_status||'';
   document.getElementById('modal-edit').classList.add('open');
 }
 
@@ -687,6 +746,10 @@ async function saveEdit(){
     address:document.getElementById('e-addr').value.trim(),hvac:hvacEditVal,
     install_timing:installTiming,cleaning_timing:cleaningTiming,
     house_year:houseYear,
+    contacts_welcome:document.getElementById('e-ch-welcome').checked,
+    contacts_call:document.getElementById('e-ch-call').checked,
+    contacts_email:document.getElementById('e-ch-email').checked,
+    deal_status:document.getElementById('e-deal').value,
     problem:document.getElementById('e-pr').value.trim(),source:document.getElementById('e-src').value.trim(),
     category:precat?precat.category:(lead.category||'warm'),
     score:precat?precat.score:(lead.score||5),
