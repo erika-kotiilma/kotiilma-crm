@@ -6,23 +6,7 @@
 <title>Koti-ilma CRM</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-:root {
-  --teal: #2ec4b6;
-  --teal-dim: rgba(46,196,182,0.15);
-  --navy: #1b2a4a;
-  --bg: #0d1520;
-  --surface: #131f30;
-  --surface2: #1a2b40;
-  --surface3: #203450;
-  --border: rgba(46,196,182,0.12);
-  --border2: rgba(255,255,255,0.06);
-  --text: #ddeeff;
-  --muted: #6a8099;
-  --green: #22c55e;
-  --amber: #f59e0b;
-  --red: #ef4444;
-  --radius: 14px;
-}
+:root{--teal:#2ec4b6;--teal-dim:rgba(46,196,182,0.15);--navy:#1b2a4a;--bg:#0d1520;--surface:#131f30;--surface2:#1a2b40;--surface3:#203450;--border:rgba(46,196,182,0.12);--border2:rgba(255,255,255,0.06);--text:#ddeeff;--muted:#6a8099;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--radius:14px}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(46,196,182,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(46,196,182,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
@@ -108,6 +92,11 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .fs option{background:var(--surface)}
 .ft{min-height:72px;resize:vertical}
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.timing-box{background:rgba(46,196,182,0.04);border:1px solid rgba(46,196,182,0.22);border-radius:11px;padding:12px 14px;margin-bottom:14px;animation:slideDown .2s ease}
+@keyframes slideDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.timing-box .fl{color:var(--teal)}
+.timing-box .fs{border-color:rgba(46,196,182,0.25)}
+.timing-box .fs:focus{border-color:var(--teal)}
 .ai-box{background:var(--bg);border:1px solid rgba(46,196,182,0.2);border-radius:11px;padding:14px;margin-bottom:14px}
 .ai-box-ttl{font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;display:flex;align-items:center;gap:5px}
 .spin{width:13px;height:13px;border:2px solid var(--border);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
@@ -167,19 +156,13 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 .status-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:12px;color:var(--muted)}
 .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 @media(max-width:900px){.sidebar{display:none}.pipeline{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}.settings-grid{grid-template-columns:1fr}}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="logo">
-    <div class="logo-mark">K</div>
-    Koti-ilma
-    <span class="logo-sub">CRM</span>
-  </div>
+  <div class="logo"><div class="logo-mark">K</div>Koti-ilma<span class="logo-sub">CRM</span></div>
   <div class="hdr-right">
     <div class="pulse-badge"><div class="pulse"></div>Live</div>
     <button class="btn-new" onclick="openAdd()">+ Uusi liidi</button>
@@ -188,150 +171,54 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 <div class="layout">
   <div class="sidebar">
     <div class="sidebar-section">Näkymät</div>
-    <button class="nav-item active" onclick="showView('pipeline',this)">
-      <span>📊</span> Pipeline
-      <span class="nav-badge" id="nb-pipeline">0</span>
-    </button>
-    <button class="nav-item" onclick="showView('messages',this)">
-      <span>✉️</span> Viestit
-      <span class="nav-badge" id="nb-messages">0</span>
-    </button>
+    <button class="nav-item active" onclick="showView('pipeline',this)"><span>📊</span> Pipeline<span class="nav-badge" id="nb-pipeline">0</span></button>
+    <button class="nav-item" onclick="showView('messages',this)"><span>✉️</span> Viestit<span class="nav-badge" id="nb-messages">0</span></button>
     <hr class="sidebar-divider">
     <div class="sidebar-section">Asetukset</div>
-    <button class="nav-item" onclick="showView('webhook',this)">
-      <span>🔗</span> Webhookit
-    </button>
-    <button class="nav-item" onclick="showView('settings',this)">
-      <span>⚙️</span> Agentti
-    </button>
+    <button class="nav-item" onclick="showView('webhook',this)"><span>🔗</span> Webhookit</button>
+    <button class="nav-item" onclick="showView('settings',this)"><span>⚙️</span> Agentti</button>
     <hr class="sidebar-divider">
-    <div style="padding:12px;font-size:11px;color:var(--muted);line-height:1.6">
-      <div style="font-weight:600;color:var(--text);margin-bottom:4px">📞 Soittojärjestys</div>
-      Soita ensin 🟡 Lähellä-kategorialle — ne ovat valmiimpia kuin luuletkaan.
-    </div>
+    <div style="padding:12px;font-size:11px;color:var(--muted);line-height:1.6"><div style="font-weight:600;color:var(--text);margin-bottom:4px">📞 Soittojärjestys</div>Soita ensin 🟡 Lähellä-kategorialle — ne ovat valmiimpia kuin luuletkaan.</div>
   </div>
   <div class="content">
-    <!-- PIPELINE -->
     <div id="view-pipeline">
       <div class="stats-grid">
-        <div class="stat" style="--c:var(--green)">
-          <div class="stat-lbl">🟢 Kaupat</div>
-          <div class="stat-val" id="s-hot">0</div>
-          <div class="stat-sub"><span class="stat-trend" id="s-conv">0%</span> konversio</div>
-        </div>
-        <div class="stat" style="--c:var(--amber)">
-          <div class="stat-lbl">🟡 Soita nyt</div>
-          <div class="stat-val" id="s-warm">0</div>
-          <div class="stat-sub">lähellä kauppaa</div>
-        </div>
-        <div class="stat" style="--c:#f87171">
-          <div class="stat-lbl">🔴 Ripuli</div>
-          <div class="stat-val" id="s-cold">0</div>
-          <div class="stat-sub">älä tuhlaa aikaa</div>
-        </div>
-        <div class="stat" style="--c:var(--teal)">
-          <div class="stat-lbl">📨 SMS lähetetty</div>
-          <div class="stat-val" id="s-sms">0</div>
-          <div class="stat-sub">automaattisesti</div>
-        </div>
+        <div class="stat" style="--c:var(--green)"><div class="stat-lbl">🟢 Kaupat</div><div class="stat-val" id="s-hot">0</div><div class="stat-sub"><span class="stat-trend" id="s-conv">0%</span> konversio</div></div>
+        <div class="stat" style="--c:var(--amber)"><div class="stat-lbl">🟡 Soita nyt</div><div class="stat-val" id="s-warm">0</div><div class="stat-sub">lähellä kauppaa</div></div>
+        <div class="stat" style="--c:#f87171"><div class="stat-lbl">🔴 Ripuli</div><div class="stat-val" id="s-cold">0</div><div class="stat-sub">älä tuhlaa aikaa</div></div>
+        <div class="stat" style="--c:var(--teal)"><div class="stat-lbl">📨 SMS lähetetty</div><div class="stat-val" id="s-sms">0</div><div class="stat-sub">automaattisesti</div></div>
       </div>
       <div class="pipeline-header">
         <div class="pipeline-title">Pipeline</div>
-        <div class="pipeline-actions">
-          <button class="btn-sm" onclick="refreshLeads()">🔄 Päivitä</button>
-          <button class="btn-sm" onclick="clearAll()">🗑️ Tyhjennä</button>
-        </div>
+        <div class="pipeline-actions"><button class="btn-sm" onclick="refreshLeads()">🔄 Päivitä</button><button class="btn-sm" onclick="clearAll()">🗑️ Tyhjennä</button></div>
       </div>
       <div class="pipeline">
-        <div class="col">
-          <div class="col-head">
-            <div class="col-title"><div class="col-dot" style="background:var(--green)"></div>🟢 Kaupat</div>
-            <div class="col-cnt" id="cc-hot">0</div>
-          </div>
-          <div class="col-body" id="col-hot"></div>
-        </div>
-        <div class="col">
-          <div class="col-head">
-            <div class="col-title"><div class="col-dot" style="background:var(--amber)"></div>🟡 Lähellä kauppaa</div>
-            <div class="col-cnt" id="cc-warm">0</div>
-          </div>
-          <div class="col-body" id="col-warm"></div>
-        </div>
-        <div class="col">
-          <div class="col-head">
-            <div class="col-title"><div class="col-dot" style="background:var(--red)"></div>🔴 Ripuli</div>
-            <div class="col-cnt" id="cc-cold">0</div>
-          </div>
-          <div class="col-body" id="col-cold"></div>
-        </div>
+        <div class="col"><div class="col-head"><div class="col-title"><div class="col-dot" style="background:var(--green)"></div>🟢 Kaupat</div><div class="col-cnt" id="cc-hot">0</div></div><div class="col-body" id="col-hot"></div></div>
+        <div class="col"><div class="col-head"><div class="col-title"><div class="col-dot" style="background:var(--amber)"></div>🟡 Lähellä kauppaa</div><div class="col-cnt" id="cc-warm">0</div></div><div class="col-body" id="col-warm"></div></div>
+        <div class="col"><div class="col-head"><div class="col-title"><div class="col-dot" style="background:var(--red)"></div>🔴 Ripuli</div><div class="col-cnt" id="cc-cold">0</div></div><div class="col-body" id="col-cold"></div></div>
       </div>
     </div>
-    <!-- MESSAGES -->
     <div id="view-messages" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Lähetetyt viestit</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px" id="msg-log">
-        <div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.</div></div>
-      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px" id="msg-log"><div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.</div></div></div>
     </div>
-    <!-- WEBHOOK -->
     <div id="view-webhook" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Webhookit</div>
-      <div class="webhook-card">
-        <div class="webhook-card-ttl">🔗 Meta & Google Ads Webhook URL</div>
-        <div class="url-box" id="wh-url">Ladataan...</div>
-        <button class="copy-btn" onclick="copyUrl()">📋 Kopioi</button>
-        <div class="hint-box" style="margin-top:12px">
-          💡 Sama URL toimii sekä Meta- että Google Ads -liideille. Lähde tunnistetaan automaattisesti mainoksen nimestä.
-        </div>
-      </div>
-      <div class="webhook-card">
-        <div class="webhook-card-ttl">🧪 Testaa manuaalisesti</div>
-        <div class="fr">
-          <div class="fg"><label class="fl">Etunimi</label><input class="fi" id="t-fn" value="Testiliidi" /></div>
-          <div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="t-ln" value="Virtanen" /></div>
-          <div class="fg"><label class="fl">Puhelin</label><input class="fi" id="t-ph" value="040 000 0000" /></div>
-          <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="t-ci" value="Oulu" /></div>
-        </div>
-        <div class="fg"><label class="fl">Ongelma</label><input class="fi" id="t-pr" value="Tunkkainen ilma ja yöllinen yskiminen" /></div>
+      <div class="webhook-card"><div class="webhook-card-ttl">🔗 Meta & Google Ads Webhook URL</div><div class="url-box" id="wh-url">Ladataan...</div><button class="copy-btn" onclick="copyUrl()">📋 Kopioi</button><div class="hint-box" style="margin-top:12px">💡 Sama URL toimii sekä Meta- että Google Ads -liideille.</div></div>
+      <div class="webhook-card"><div class="webhook-card-ttl">🧪 Testaa manuaalisesti</div>
+        <div class="fr"><div class="fg"><label class="fl">Etunimi</label><input class="fi" id="t-fn" value="Testiliidi"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="t-ln" value="Virtanen"/></div><div class="fg"><label class="fl">Puhelin</label><input class="fi" id="t-ph" value="040 000 0000"/></div><div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="t-ci" value="Oulu"/></div></div>
+        <div class="fg"><label class="fl">Ongelma</label><input class="fi" id="t-pr" value="Tunkkainen ilma"/></div>
         <button class="btn-p" style="margin-top:4px" onclick="testWebhook()">⚡ Lähetä testiliidi</button>
       </div>
     </div>
-    <!-- SETTINGS -->
     <div id="view-settings" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Agentti & API-asetukset</div>
-      <div style="background:rgba(46,196,182,0.06);border:1px solid rgba(46,196,182,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--teal)">
-        🔒 API-avaimet asetetaan Render.com-palveluun Environment Variables -kohtaan.
-      </div>
+      <div style="background:rgba(46,196,182,0.06);border:1px solid rgba(46,196,182,0.2);border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:var(--teal)">🔒 API-avaimet asetetaan Render.com-palveluun Environment Variables -kohtaan.</div>
       <div class="settings-grid">
-        <div class="settings-card">
-          <div class="settings-card-ttl">🤖 Anthropic (AI) — Tila</div>
-          <button class="btn-p" onclick="testAI()" style="margin-bottom:12px">🧪 Testaa AI-yhteys</button>
-          <div class="status-row"><div class="status-dot" id="dot-ai" style="background:var(--muted)"></div><span id="status-ai">Ei testattu</span></div>
-          <div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.7">Avain: <strong style="color:var(--text)">ANTHROPIC_API_KEY</strong></div>
-        </div>
-        <div class="settings-card">
-          <div class="settings-card-ttl">📱 Twilio (SMS)</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.7">
-            <strong style="color:var(--text)">TWILIO_SID</strong><br>
-            <strong style="color:var(--text)">TWILIO_TOKEN</strong><br>
-            <strong style="color:var(--text)">TWILIO_FROM</strong>
-          </div>
-        </div>
-        <div class="settings-card">
-          <div class="settings-card-ttl">📧 SendGrid (Email)</div>
-          <div style="font-size:12px;color:var(--muted);line-height:1.7">
-            <strong style="color:var(--text)">SENDGRID_KEY</strong><br>
-            <strong style="color:var(--text)">EMAIL_FROM</strong>
-          </div>
-        </div>
-        <div class="settings-card">
-          <div class="settings-card-ttl">📋 Render.com ohjeet</div>
-          <div class="step-list" style="margin-top:4px">
-            <div class="step"><div class="step-num">1</div><div class="step-content">Mene <strong>render.com</strong> → kotiilma-crm</div></div>
-            <div class="step"><div class="step-num">2</div><div class="step-content">Klikkaa <strong>Environment</strong></div></div>
-            <div class="step"><div class="step-num">3</div><div class="step-content">Lisää muuttujat → <strong>Save Changes</strong></div></div>
-          </div>
-        </div>
+        <div class="settings-card"><div class="settings-card-ttl">🤖 Anthropic (AI) — Tila</div><button class="btn-p" onclick="testAI()" style="margin-bottom:12px">🧪 Testaa AI-yhteys</button><div class="status-row"><div class="status-dot" id="dot-ai" style="background:var(--muted)"></div><span id="status-ai">Ei testattu</span></div><div style="margin-top:12px;font-size:11px;color:var(--muted);line-height:1.7">Avain: <strong style="color:var(--text)">ANTHROPIC_API_KEY</strong></div></div>
+        <div class="settings-card"><div class="settings-card-ttl">📱 Twilio (SMS)</div><div style="font-size:12px;color:var(--muted);line-height:1.7"><strong style="color:var(--text)">TWILIO_SID</strong><br><strong style="color:var(--text)">TWILIO_TOKEN</strong><br><strong style="color:var(--text)">TWILIO_FROM</strong></div></div>
+        <div class="settings-card"><div class="settings-card-ttl">📧 SendGrid (Email)</div><div style="font-size:12px;color:var(--muted);line-height:1.7"><strong style="color:var(--text)">SENDGRID_KEY</strong><br><strong style="color:var(--text)">EMAIL_FROM</strong></div></div>
+        <div class="settings-card"><div class="settings-card-ttl">📋 Render.com ohjeet</div><div class="step-list" style="margin-top:4px"><div class="step"><div class="step-num">1</div><div class="step-content">Mene <strong>render.com</strong> → kotiilma-crm</div></div><div class="step"><div class="step-num">2</div><div class="step-content">Klikkaa <strong>Environment</strong></div></div><div class="step"><div class="step-num">3</div><div class="step-content">Lisää muuttujat → <strong>Save Changes</strong></div></div></div></div>
       </div>
     </div>
   </div>
@@ -341,31 +228,16 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
 <!-- ADD MODAL -->
 <div class="overlay" id="modal-add">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-ttl">Lisää liidi</div>
-      <button class="modal-close" onclick="closeM('modal-add')">×</button>
-    </div>
+    <div class="modal-head"><div class="modal-ttl">Lisää liidi</div><button class="modal-close" onclick="closeM('modal-add')">×</button></div>
     <div class="modal-body">
-      <div class="ai-box" id="ai-box" style="display:none">
-        <div class="ai-box-ttl"><div class="spin" id="ai-spin" style="display:none"></div> AI Kvalifiointi</div>
-        <div id="ai-result"></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="f-fn" placeholder="Matti" /></div>
-        <div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="f-ln" placeholder="Virtanen" /></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="f-ph" placeholder="040 123 4567" /></div>
-        <div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="f-em" placeholder="matti@email.fi" /></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="f-ci" placeholder="Oulu" /></div>
-        <div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="f-yr" placeholder="1985" type="number" /></div>
-      </div>
-      <div class="fg"><label class="fl">Osoite</label><input class="fi" id="f-addr" placeholder="Kevätkatu 11" /></div>
+      <div class="ai-box" id="ai-box" style="display:none"><div class="ai-box-ttl"><div class="spin" id="ai-spin" style="display:none"></div> AI Kvalifiointi</div><div id="ai-result"></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="f-fn" placeholder="Matti"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="f-ln" placeholder="Virtanen"/></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="f-ph" placeholder="040 123 4567"/></div><div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="f-em" placeholder="matti@email.fi"/></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="f-ci" placeholder="Oulu"/></div><div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="f-yr" placeholder="1985" type="number"/></div></div>
+      <div class="fg"><label class="fl">Osoite</label><input class="fi" id="f-addr" placeholder="Kevätkatu 11"/></div>
       <div class="fg">
         <label class="fl">Palvelu</label>
-        <select class="fs" id="f-hv">
+        <select class="fs" id="f-hv" onchange="onServiceChange('f')">
           <option value="">Ei tietoa</option>
           <option value="ILP">ILP — Ilmanvaihdon lämpöpumppu</option>
           <option value="Puhdistus">Puhdistus — Ilmanvaihdon puhdistus</option>
@@ -373,43 +245,45 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="muu">Muu</option>
         </select>
       </div>
+      <div class="timing-box" id="f-timing-ilp" style="display:none">
+        <label class="fl">⏰ Milloin ILP-asennus olisi ajankohtainen?</label>
+        <select class="fs" id="f-install-timing">
+          <option value="">Valitse ajankohta...</option>
+          <option value="mahdollisimman_pian">🔥 Mahdollisimman pian</option>
+          <option value="kesakuussa">📅 Kesäkuussa</option>
+          <option value="syksylla">🍂 Syksyllä</option>
+          <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
+        </select>
+      </div>
+      <div class="timing-box" id="f-timing-puh" style="display:none">
+        <label class="fl">⏰ Milloin puhdistus olisi ajankohtainen?</label>
+        <select class="fs" id="f-cleaning-timing">
+          <option value="">Valitse ajankohta...</option>
+          <option value="mahdollisimman_pian">🔥 Mahdollisimman pian</option>
+          <option value="touko_kesakuussa">📅 Touko-kesäkuussa</option>
+          <option value="syksylla">🍂 Syksyllä</option>
+          <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
+        </select>
+      </div>
       <div class="fg"><label class="fl">Lisätietoja</label><textarea class="ft" id="f-pr" placeholder="Esim. omakotitalo, viilennys, asennus mahdollisimman pian..."></textarea></div>
-      <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="f-src" placeholder="esim. ILP | Mökki | Kesä 2026" /></div>
+      <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="f-src" placeholder="esim. ILP | Mökki | Kesä 2026"/></div>
     </div>
-    <div class="modal-foot">
-      <button class="btn-s" onclick="closeM('modal-add')">Peruuta</button>
-      <button class="btn-p" id="btn-save" onclick="saveLead()">
-        <span id="save-spin" style="display:none" class="spin"></span>
-        🤖 Tallenna & AI Kvalifioi
-      </button>
-    </div>
+    <div class="modal-foot"><button class="btn-s" onclick="closeM('modal-add')">Peruuta</button><button class="btn-p" id="btn-save" onclick="saveLead()"><span id="save-spin" style="display:none" class="spin"></span>🤖 Tallenna & AI Kvalifioi</button></div>
   </div>
 </div>
 
 <!-- EDIT MODAL -->
 <div class="overlay" id="modal-edit">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-ttl">Muokkaa liidiä</div>
-      <button class="modal-close" onclick="closeM('modal-edit')">×</button>
-    </div>
+    <div class="modal-head"><div class="modal-ttl">Muokkaa liidiä</div><button class="modal-close" onclick="closeM('modal-edit')">×</button></div>
     <div class="modal-body">
-      <div class="fr">
-        <div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="e-fn" /></div>
-        <div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="e-ln" /></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="e-ph" /></div>
-        <div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="e-em" /></div>
-      </div>
-      <div class="fr">
-        <div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="e-ci" /></div>
-        <div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="e-yr" type="number" /></div>
-      </div>
-      <div class="fg"><label class="fl">Osoite</label><input class="fi" id="e-addr" /></div>
+      <div class="fr"><div class="fg"><label class="fl">Etunimi *</label><input class="fi" id="e-fn"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="e-ln"/></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Puhelin *</label><input class="fi" id="e-ph"/></div><div class="fg"><label class="fl">Sähköposti</label><input class="fi" id="e-em"/></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Kaupunki</label><input class="fi" id="e-ci"/></div><div class="fg"><label class="fl">Talon vuosi</label><input class="fi" id="e-yr" type="number"/></div></div>
+      <div class="fg"><label class="fl">Osoite</label><input class="fi" id="e-addr"/></div>
       <div class="fg">
         <label class="fl">Palvelu</label>
-        <select class="fs" id="e-hv">
+        <select class="fs" id="e-hv" onchange="onServiceChange('e')">
           <option value="">Ei tietoa</option>
           <option value="ILP">ILP — Ilmanvaihdon lämpöpumppu</option>
           <option value="Puhdistus">Puhdistus — Ilmanvaihdon puhdistus</option>
@@ -417,44 +291,87 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
           <option value="muu">Muu</option>
         </select>
       </div>
+      <div class="timing-box" id="e-timing-ilp" style="display:none">
+        <label class="fl">⏰ Milloin ILP-asennus olisi ajankohtainen?</label>
+        <select class="fs" id="e-install-timing">
+          <option value="">Valitse ajankohta...</option>
+          <option value="mahdollisimman_pian">🔥 Mahdollisimman pian</option>
+          <option value="kesakuussa">📅 Kesäkuussa</option>
+          <option value="syksylla">🍂 Syksyllä</option>
+          <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
+        </select>
+      </div>
+      <div class="timing-box" id="e-timing-puh" style="display:none">
+        <label class="fl">⏰ Milloin puhdistus olisi ajankohtainen?</label>
+        <select class="fs" id="e-cleaning-timing">
+          <option value="">Valitse ajankohta...</option>
+          <option value="mahdollisimman_pian">🔥 Mahdollisimman pian</option>
+          <option value="touko_kesakuussa">📅 Touko-kesäkuussa</option>
+          <option value="syksylla">🍂 Syksyllä</option>
+          <option value="vain_tiedustelu">💬 Vain tiedustelu</option>
+        </select>
+      </div>
       <div class="fg"><label class="fl">Ongelma / Syy</label><textarea class="ft" id="e-pr"></textarea></div>
-      <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="e-src" /></div>
+      <div class="fg"><label class="fl">Lähde / Mainos</label><input class="fi" id="e-src"/></div>
     </div>
-    <div class="modal-foot">
-      <button class="btn-s" onclick="closeM('modal-edit')">Peruuta</button>
-      <button class="btn-p" onclick="saveEdit()">💾 Tallenna muutokset</button>
-    </div>
+    <div class="modal-foot"><button class="btn-s" onclick="closeM('modal-edit')">Peruuta</button><button class="btn-p" onclick="saveEdit()">💾 Tallenna muutokset</button></div>
   </div>
 </div>
 
 <!-- DETAIL MODAL -->
 <div class="overlay" id="modal-detail">
   <div class="modal">
-    <div class="modal-head">
-      <div class="modal-ttl" id="d-ttl">Liidi</div>
-      <button class="modal-close" onclick="closeM('modal-detail')">×</button>
-    </div>
+    <div class="modal-head"><div class="modal-ttl" id="d-ttl">Liidi</div><button class="modal-close" onclick="closeM('modal-detail')">×</button></div>
     <div class="modal-body" id="d-body"></div>
-    <div class="modal-foot">
-      <button class="btn-s" onclick="closeM('modal-detail')">Sulje</button>
-      <button class="btn-p" id="d-call">📞 Soita</button>
-    </div>
+    <div class="modal-foot"><button class="btn-s" onclick="closeM('modal-detail')">Sulje</button><button class="btn-p" id="d-call">📞 Soita</button></div>
   </div>
 </div>
 
-<div class="toast" id="toast">
-  <div class="toast-icon" id="t-ico">✅</div>
-  <div>
-    <div class="toast-ttl" id="t-ttl"></div>
-    <div class="toast-sub" id="t-sub"></div>
-  </div>
-</div>
+<div class="toast" id="toast"><div class="toast-icon" id="t-ico">✅</div><div><div class="toast-ttl" id="t-ttl"></div><div class="toast-sub" id="t-sub"></div></div></div>
 
 <script>
 const BASE_URL = 'https://kotiilma-crm-api.onrender.com';
 const API = (path) => `${BASE_URL}${path}`;
 let leads = [];
 let msgLog = JSON.parse(localStorage.getItem('ki-msgs') || '[]');
+
+// ── Timing → kategoria-logiikka ─────────────────────────────────
+// ILP:       mahdollisimman_pian=hot  kesakuussa=warm  syksylla=cold  vain_tiedustelu=cold
+// Puhdistus: mahdollisimman_pian=hot  touko_kesakuussa=warm  syksylla=cold  vain_tiedustelu=cold
+const ILP_CAT = {
+  mahdollisimman_pian: {category:'hot',  score:9},
+  kesakuussa:          {category:'warm', score:6},
+  syksylla:            {category:'cold', score:3},
+  vain_tiedustelu:     {category:'cold', score:2}
+};
+const PUH_CAT = {
+  mahdollisimman_pian: {category:'hot',  score:9},
+  touko_kesakuussa:    {category:'warm', score:6},
+  syksylla:            {category:'cold', score:3},
+  vain_tiedustelu:     {category:'cold', score:2}
+};
+const TIMING_LABELS = {
+  mahdollisimman_pian:'🔥 Mahdollisimman pian',
+  kesakuussa:'📅 Kesäkuussa',
+  touko_kesakuussa:'📅 Touko-kesäkuussa',
+  syksylla:'🍂 Syksyllä',
+  vain_tiedustelu:'💬 Vain tiedustelu'
+};
+
+function timingToCategory(service, timing) {
+  if (service === 'ILP')       return ILP_CAT[timing] || null;
+  if (service === 'Puhdistus') return PUH_CAT[timing] || null;
+  return null;
+}
+
+// ── Näytä/piilota timing-valikko palvelun valinnan mukaan ────────
+function onServiceChange(prefix) {
+  const val = document.getElementById(prefix+'-hv').value;
+  document.getElementById(prefix+'-timing-ilp').style.display = val==='ILP'       ? 'block' : 'none';
+  document.getElementById(prefix+'-timing-puh').style.display = val==='Puhdistus' ? 'block' : 'none';
+  if (val !== 'ILP')       document.getElementById(prefix+'-install-timing').value  = '';
+  if (val !== 'Puhdistus') document.getElementById(prefix+'-cleaning-timing').value = '';
+}
 
 async function init() {
   document.getElementById('wh-url').textContent = `${BASE_URL}/webhook/meta`;
@@ -479,7 +396,7 @@ function showView(name, el) {
 }
 
 function render() {
-  const cats = {hot:[], warm:[], cold:[]};
+  const cats={hot:[],warm:[],cold:[]};
   leads.forEach(l => { if(cats[l.category]) cats[l.category].push(l); });
   renderCol('col-hot', cats.hot, 'hot');
   renderCol('col-warm', cats.warm, 'warm');
@@ -492,27 +409,28 @@ function render() {
   document.getElementById('s-hot').textContent = cats.hot.length;
   document.getElementById('s-warm').textContent = cats.warm.length;
   document.getElementById('s-cold').textContent = cats.cold.length;
-  document.getElementById('s-conv').textContent = total>0 ? Math.round(cats.hot.length/total*100)+'%' : '0%';
+  document.getElementById('s-conv').textContent = total>0?Math.round(cats.hot.length/total*100)+'%':'0%';
   document.getElementById('s-sms').textContent = leads.filter(l=>l.smsSent).length;
   document.getElementById('nb-messages').textContent = msgLog.length;
 }
 
-const CC = {hot:'var(--green)', warm:'var(--amber)', cold:'#f87171'};
+const CC={hot:'var(--green)',warm:'var(--amber)',cold:'#f87171'};
 
 function renderCol(id, items, cat) {
   const el = document.getElementById(id);
-  const empties = {hot:'🎯 Lisää ensimmäinen liidi!', warm:'📞 Soita näille perään.', cold:'🗑️ Hyvä merkki!'};
-  if (!items.length) { el.innerHTML = `<div class="empty"><div class="empty-ico">${cat==='hot'?'🎯':cat==='warm'?'📞':'🗑️'}</div><div class="empty-txt">${empties[cat]}</div></div>`; return; }
-  el.innerHTML = items.sort((a,b)=>b.score-a.score).map(l => `
+  const empties = {hot:'🎯 Lisää ensimmäinen liidi!',warm:'📞 Soita näille perään.',cold:'🗑️ Hyvä merkki!'};
+  if(!items.length){el.innerHTML=`<div class="empty"><div class="empty-ico">${cat==='hot'?'🎯':cat==='warm'?'📞':'🗑️'}</div><div class="empty-txt">${empties[cat]}</div></div>`;return;}
+  el.innerHTML = items.sort((a,b)=>b.score-a.score).map(l => {
+    const timing = l.install_timing||l.cleaning_timing||'';
+    const timingLabel = TIMING_LABELS[timing]||'';
+    return `
     <div class="card" style="--cc:${CC[cat]}" onclick="openDetail(${l.id})">
-      <div class="card-top">
-        <div class="card-name">${l.firstname} ${l.lastname||''}</div>
-        <div class="score-pill s-${cat}">${l.score}/10</div>
-      </div>
+      <div class="card-top"><div class="card-name">${l.firstname} ${l.lastname||''}</div><div class="score-pill s-${cat}">${l.score}/10</div></div>
       <div class="card-info">
         <div class="card-row">📞 <a href="tel:${l.phone}" style="color:inherit;text-decoration:none" onclick="event.stopPropagation()">${l.phone}</a></div>
         ${l.city?`<div class="card-row">📍 ${l.city}</div>`:''}
         ${l.source?`<div class="card-row">📌 ${l.source}</div>`:''}
+        ${timingLabel?`<div class="card-row">⏰ ${timingLabel}</div>`:''}
       </div>
       ${l.problem?`<div class="card-problem">${l.problem.substring(0,60)}${l.problem.length>60?'...':''}</div>`:''}
       ${l.aiQualified?`<div class="ai-tag">🤖 AI kvalifioitu</div>`:''}
@@ -524,251 +442,232 @@ function renderCol(id, items, cat) {
         <button class="cbtn" onclick="delLead(${l.id})">🗑</button>
       </div>
       <div class="card-time">${ago(l.createdAt)}</div>
-    </div>
-  `).join('');
+    </div>`
+  }).join('');
 }
 
 async function qualify(lead) {
   try {
-    const res = await fetch(API('/api/qualify'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({lead}) });
-    if (res.ok) return await res.json();
+    const res = await fetch(API('/api/qualify'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({lead})});
+    if(res.ok) return await res.json();
     return fallbackQualify(lead);
   } catch(e) { return fallbackQualify(lead); }
 }
 
 function fallbackQualify(l) {
-  let score = 5;
-  if(l.hvac==='painovoimainen'||l.hvac==='huippuimuri') score+=2;
-  if(l.year && parseInt(l.year)<2000) score+=1;
-  if(l.problem && l.problem.length>20) score+=1;
-  const category = score>=8?'hot':score<=4?'cold':'warm';
-  return { category, score, reasoning:'Automaattinen analyysi — AI ei ole yhteydessä.',
+  const timing = l.install_timing||l.cleaning_timing||'';
+  const cat = timingToCategory(l.hvac||'', timing);
+  if(cat){
+    const reasons={hot:'Haluaa palvelun mahdollisimman pian — selkeä ostosignaali.',warm:'Ajankohtainen lähiaikoina — kannattaa soittaa pikaisesti.',cold:'Ei akuuttia tarvetta — matala prioriteetti tällä hetkellä.'};
+    return{category:cat.category,score:cat.score,reasoning:reasons[cat.category],
+      sms_text:`Hei ${l.firstname}! Kiitos yhteydenotosta Koti-ilmalle. Palataan sinulle pian! — Erika, 010 200 7561`,
+      followup_text:`Hei ${l.firstname}, sopiiko hetki puhua ilmanvaihtotilanteestasi? — Erika`};
+  }
+  let score=5;
+  if(l.year&&parseInt(l.year)<2000) score+=1;
+  if(l.problem&&l.problem.length>20) score+=1;
+  const category=score>=8?'hot':score<=4?'cold':'warm';
+  return{category,score,reasoning:'Automaattinen analyysi — AI ei ole yhteydessä.',
     sms_text:`Hei ${l.firstname}! Kiitos yhteydenotosta Koti-ilmalle. Palataan sinulle pian! — Erika, 010 200 7561`,
-    followup_text:`Hei ${l.firstname}, sopiiko hetki puhua ilmanvaihtotilanteestasi? — Erika` };
+    followup_text:`Hei ${l.firstname}, sopiiko hetki puhua ilmanvaihtotilanteestasi? — Erika`};
 }
 
 async function sendSMS(to, body) {
-  try {
-    const res = await fetch(API('/api/sms'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({to, message:body}) });
-    return (await res.json()).ok === true;
-  } catch(e) { return false; }
+  try{const res=await fetch(API('/api/sms'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({to,message:body})});return(await res.json()).ok===true;}catch(e){return false;}
 }
 
 async function testAI() {
-  const dot = document.getElementById('dot-ai'), status = document.getElementById('status-ai');
-  dot.style.background = 'var(--amber)'; status.textContent = 'Testataan...';
-  try {
-    const res = await fetch(API('/api/test-anthropic'), {method:'POST'});
-    const data = await res.json();
-    if (data.ok) { dot.style.background='var(--green)'; status.textContent='✓ AI toimii!'; toast('✅','AI toimii!','Qualifiointi käytössä'); }
-    else { dot.style.background='var(--red)'; status.textContent='Virhe: '+(data.error||'Tarkista API-avain'); }
-  } catch(e) { dot.style.background='var(--red)'; status.textContent='Yhteysvirhe palvelimeen'; }
+  const dot=document.getElementById('dot-ai'),status=document.getElementById('status-ai');
+  dot.style.background='var(--amber)';status.textContent='Testataan...';
+  try{const res=await fetch(API('/api/test-anthropic'),{method:'POST'});const data=await res.json();
+    if(data.ok){dot.style.background='var(--green)';status.textContent='✓ AI toimii!';toast('✅','AI toimii!','Qualifiointi käytössä');}
+    else{dot.style.background='var(--red)';status.textContent='Virhe: '+(data.error||'Tarkista API-avain');}
+  }catch(e){dot.style.background='var(--red)';status.textContent='Yhteysvirhe palvelimeen';}
 }
 
-function openAdd() { document.getElementById('modal-add').classList.add('open'); }
+function openAdd(){document.getElementById('modal-add').classList.add('open');}
 
 async function saveLead() {
-  const fn = v('f-fn'), ph = v('f-ph');
-  if(!fn||!ph){ toast('⚠️','Täytä pakolliset kentät',''); return; }
-  const l = {
-    id:Date.now(), firstname:fn, lastname:v('f-ln'), phone:ph,
-    email:v('f-em'), city:v('f-ci'), year:v('f-yr'), address:v('f-addr'),
-    hvac:v('f-hv'), problem:v('f-pr'), source:v('f-src')||'manuaalinen',
-    category:'warm', score:5, aiQualified:false, smsSent:false,
-    createdAt:new Date().toISOString()
+  const fn=v('f-fn'),ph=v('f-ph');
+  if(!fn||!ph){toast('⚠️','Täytä pakolliset kentät','');return;}
+  const hvacVal=v('f-hv');
+  const installTiming  = hvacVal==='ILP'       ? v('f-install-timing')  : '';
+  const cleaningTiming = hvacVal==='Puhdistus'  ? v('f-cleaning-timing') : '';
+  const precat = timingToCategory(hvacVal, installTiming||cleaningTiming);
+  const l={
+    id:Date.now(),firstname:fn,lastname:v('f-ln'),phone:ph,
+    email:v('f-em'),city:v('f-ci'),year:v('f-yr'),address:v('f-addr'),
+    hvac:hvacVal,problem:v('f-pr'),source:v('f-src')||'manuaalinen',
+    install_timing:installTiming,cleaning_timing:cleaningTiming,
+    category:precat?precat.category:'warm',score:precat?precat.score:5,
+    aiQualified:false,smsSent:false,createdAt:new Date().toISOString()
   };
-  const btn = document.getElementById('btn-save');
-  btn.disabled = true;
-  document.getElementById('save-spin').style.display = 'inline-block';
-  const box = document.getElementById('ai-box'), res = document.getElementById('ai-result');
-  box.style.display = 'block';
-  document.getElementById('ai-spin').style.display = 'inline-block';
-  res.innerHTML = `<div class="ai-thinking"><div class="spin"></div> AI analysoi liidiä...</div>`;
-  const aiRes = await qualify(l);
-  l.category=aiRes.category; l.score=aiRes.score; l.reasoning=aiRes.reasoning;
-  l.smsText=aiRes.sms_text; l.followupText=aiRes.followup_text; l.aiQualified=true;
-  document.getElementById('ai-spin').style.display = 'none';
-  const cl = CC[l.category];
-  const lb = {hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
-  res.innerHTML = `
-    <div class="cat-badge" style="background:${cl}18;color:${cl};border:1px solid ${cl}35">${lb[l.category]} — ${l.score}/10</div>
-    <div class="ai-text">${l.reasoning}</div>
-    ${l.smsText?`<div class="ai-msg-lbl" style="margin-top:10px">📱 SMS:</div><div class="ai-msg-preview">${l.smsText}</div>`:''}
-  `;
-  if (l.phone && l.smsText) { const sent = await sendSMS(l.phone, l.smsText); l.smsSent=sent; logMsg(l,'sms',l.smsText,sent); }
-  await fetch(API('/api/leads'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(l) });
-  leads.push(l); render();
-  btn.disabled=false; document.getElementById('save-spin').style.display='none';
-  setTimeout(() => { closeM('modal-add'); resetForm(); toast('🎯',`${fn} lisätty!`,`${lb[l.category]} — SMS ${l.smsSent?'lähetetty ✓':'jonossa'}`); }, 1800);
+  const btn=document.getElementById('btn-save');
+  btn.disabled=true;document.getElementById('save-spin').style.display='inline-block';
+  const box=document.getElementById('ai-box'),res=document.getElementById('ai-result');
+  box.style.display='block';document.getElementById('ai-spin').style.display='inline-block';
+  res.innerHTML=`<div class="ai-thinking"><div class="spin"></div> AI analysoi liidiä...</div>`;
+  const aiRes=await qualify(l);
+  l.category=aiRes.category;l.score=aiRes.score;l.reasoning=aiRes.reasoning;
+  l.smsText=aiRes.sms_text;l.followupText=aiRes.followup_text;l.aiQualified=true;
+  document.getElementById('ai-spin').style.display='none';
+  const cl=CC[l.category];const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
+  res.innerHTML=`<div class="cat-badge" style="background:${cl}18;color:${cl};border:1px solid ${cl}35">${lb[l.category]} — ${l.score}/10</div><div class="ai-text">${l.reasoning}</div>${l.smsText?`<div class="ai-msg-lbl" style="margin-top:10px">📱 SMS:</div><div class="ai-msg-preview">${l.smsText}</div>`:''}`;
+  if(l.phone&&l.smsText){const sent=await sendSMS(l.phone,l.smsText);l.smsSent=sent;logMsg(l,'sms',l.smsText,sent);}
+  await fetch(API('/api/leads'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(l)});
+  leads.push(l);render();
+  btn.disabled=false;document.getElementById('save-spin').style.display='none';
+  setTimeout(()=>{closeM('modal-add');resetForm();toast('🎯',`${fn} lisätty!`,`${lb[l.category]} — SMS ${l.smsSent?'lähetetty ✓':'jonossa'}`);},1800);
 }
 
 function resetForm() {
-  ['f-fn','f-ln','f-ph','f-em','f-ci','f-yr','f-addr','f-pr','f-src'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['f-fn','f-ln','f-ph','f-em','f-ci','f-yr','f-addr','f-pr','f-src'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('f-hv').value='';
+  document.getElementById('f-install-timing').value='';
+  document.getElementById('f-cleaning-timing').value='';
+  document.getElementById('f-timing-ilp').style.display='none';
+  document.getElementById('f-timing-puh').style.display='none';
   document.getElementById('ai-box').style.display='none';
 }
 
 function openDetail(id) {
-  const l = leads.find(x=>x.id===id); if(!l) return;
-  document.getElementById('d-ttl').textContent = `${l.firstname} ${l.lastname||''}`;
-  document.getElementById('d-call').onclick = () => callLead(l.phone);
-  const cl = CC[l.category];
-  const lb = {hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
-  const lm = msgLog.filter(m=>m.leadId===l.id);
-  document.getElementById('d-body').innerHTML = `
-    <div class="dsec">
-      <div class="dsec-ttl">Yhteystiedot</div>
-      <div class="dgrid">
-        <div><div class="di-lbl">Nimi</div><div class="di-val">${l.firstname} ${l.lastname||''}</div></div>
-        <div><div class="di-lbl">Puhelin</div><div class="di-val"><a href="tel:${l.phone}" style="color:var(--teal)">${l.phone}</a></div></div>
-        ${l.email?`<div><div class="di-lbl">Sähköposti</div><div class="di-val">${l.email}</div></div>`:''}
-        ${l.city?`<div><div class="di-lbl">Kaupunki</div><div class="di-val">${l.city}</div></div>`:''}
-        ${l.address?`<div><div class="di-lbl">Osoite</div><div class="di-val">${l.address}</div></div>`:''}
-        ${l.year?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${l.year}</div></div>`:''}
-        ${l.hvac?`<div><div class="di-lbl">Ilmanvaihto</div><div class="di-val">${l.hvac}</div></div>`:''}
-        <div><div class="di-lbl">Lähde / Mainos</div><div class="di-val">${l.source||'—'}</div></div>
-        <div><div class="di-lbl">Lisätty</div><div class="di-val">${new Date(l.createdAt).toLocaleDateString('fi-FI')}</div></div>
-      </div>
-    </div>
-    ${l.problem?`<div class="dsec"><div class="dsec-ttl">Lisätiedot</div><div style="font-size:13px;line-height:1.6">${l.problem}</div></div>`:''}\n    ${(l.install_timing||l.cleaning_timing||l.property_type||l.property_size||l.hvac_features||l.house_type||l.floor_area||l.floors||l.vents)?`<div class="dsec"><div class="dsec-ttl">📋 Lomakkeen vastaukset</div><div class="dgrid">${l.install_timing?`<div><div class="di-lbl">Milloin asennus</div><div class="di-val" style="color:var(--teal)">${l.install_timing}</div></div>`:''} ${l.cleaning_timing?`<div><div class="di-lbl">Milloin puhdistus</div><div class="di-val" style="color:var(--teal)">${l.cleaning_timing}</div></div>`:''} ${l.property_type?`<div><div class="di-lbl">Kiinteistön tyyppi</div><div class="di-val">${l.property_type}</div></div>`:''} ${l.property_size?`<div><div class="di-lbl">Kiinteistön koko</div><div class="di-val">${l.property_size}</div></div>`:''} ${l.hvac_features?`<div><div class="di-lbl">Halutut ominaisuudet</div><div class="di-val">${l.hvac_features}</div></div>`:''} ${l.house_type?`<div><div class="di-lbl">Talotyyppi</div><div class="di-val">${l.house_type}</div></div>`:''} ${l.floor_area?`<div><div class="di-lbl">Pinta-ala</div><div class="di-val">${l.floor_area}</div></div>`:''} ${l.floors?`<div><div class="di-lbl">Kerrokset</div><div class="di-val">${l.floors}</div></div>`:''} ${l.vents?`<div><div class="di-lbl">Venttiilien määrä</div><div class="di-val">${l.vents}</div></div>`:''}</div></div>`:''}
-    <div class="dsec">
-      <div class="dsec-ttl">AI Analyysi</div>
+  const l=leads.find(x=>x.id===id);if(!l)return;
+  document.getElementById('d-ttl').textContent=`${l.firstname} ${l.lastname||''}`;
+  document.getElementById('d-call').onclick=()=>callLead(l.phone);
+  const cl=CC[l.category];const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
+  const lm=msgLog.filter(m=>m.leadId===l.id);
+  const timing=l.install_timing||l.cleaning_timing||'';
+  const timingLabel=TIMING_LABELS[timing]||'';
+  document.getElementById('d-body').innerHTML=`
+    <div class="dsec"><div class="dsec-ttl">Yhteystiedot</div><div class="dgrid">
+      <div><div class="di-lbl">Nimi</div><div class="di-val">${l.firstname} ${l.lastname||''}</div></div>
+      <div><div class="di-lbl">Puhelin</div><div class="di-val"><a href="tel:${l.phone}" style="color:var(--teal)">${l.phone}</a></div></div>
+      ${l.email?`<div><div class="di-lbl">Sähköposti</div><div class="di-val">${l.email}</div></div>`:''}
+      ${l.city?`<div><div class="di-lbl">Kaupunki</div><div class="di-val">${l.city}</div></div>`:''}
+      ${l.address?`<div><div class="di-lbl">Osoite</div><div class="di-val">${l.address}</div></div>`:''}
+      ${l.year?`<div><div class="di-lbl">Talon vuosi</div><div class="di-val">${l.year}</div></div>`:''}
+      ${l.hvac?`<div><div class="di-lbl">Palvelu</div><div class="di-val">${l.hvac}</div></div>`:''}
+      ${timingLabel?`<div><div class="di-lbl">Ajankohtaisuus</div><div class="di-val" style="color:var(--teal)">${timingLabel}</div></div>`:''}
+      <div><div class="di-lbl">Lähde / Mainos</div><div class="di-val">${l.source||'—'}</div></div>
+      <div><div class="di-lbl">Lisätty</div><div class="di-val">${new Date(l.createdAt).toLocaleDateString('fi-FI')}</div></div>
+    </div></div>
+    ${l.problem?`<div class="dsec"><div class="dsec-ttl">Lisätiedot</div><div style="font-size:13px;line-height:1.6">${l.problem}</div></div>`:''}
+    ${(l.install_timing||l.cleaning_timing||l.property_type||l.property_size||l.hvac_features||l.house_type||l.floor_area||l.floors||l.vents)?`<div class="dsec"><div class="dsec-ttl">📋 Lomakkeen vastaukset</div><div class="dgrid">${l.install_timing?`<div><div class="di-lbl">Milloin asennus</div><div class="di-val" style="color:var(--teal)">${TIMING_LABELS[l.install_timing]||l.install_timing}</div></div>`:''} ${l.cleaning_timing?`<div><div class="di-lbl">Milloin puhdistus</div><div class="di-val" style="color:var(--teal)">${TIMING_LABELS[l.cleaning_timing]||l.cleaning_timing}</div></div>`:''} ${l.property_type?`<div><div class="di-lbl">Kiinteistön tyyppi</div><div class="di-val">${l.property_type}</div></div>`:''} ${l.property_size?`<div><div class="di-lbl">Kiinteistön koko</div><div class="di-val">${l.property_size}</div></div>`:''} ${l.hvac_features?`<div><div class="di-lbl">Halutut ominaisuudet</div><div class="di-val">${l.hvac_features}</div></div>`:''} ${l.house_type?`<div><div class="di-lbl">Talotyyppi</div><div class="di-val">${l.house_type}</div></div>`:''} ${l.floor_area?`<div><div class="di-lbl">Pinta-ala</div><div class="di-val">${l.floor_area}</div></div>`:''} ${l.floors?`<div><div class="di-lbl">Kerrokset</div><div class="di-val">${l.floors}</div></div>`:''} ${l.vents?`<div><div class="di-lbl">Venttiilien määrä</div><div class="di-val">${l.vents}</div></div>`:''}</div></div>`:''}
+    <div class="dsec"><div class="dsec-ttl">AI Analyysi</div>
       <div class="cat-badge" style="background:${cl}18;color:${cl};border:1px solid ${cl}35">${lb[l.category]} — ${l.score}/10</div>
       <div style="font-size:12px;color:var(--muted);margin-top:5px">${l.reasoning||'—'}</div>
     </div>
     ${lm.length?`<div class="dsec"><div class="dsec-ttl">Lähetetyt viestit</div>${lm.map(m=>`<div class="msg-lbl out">📱 SMS — ${new Date(m.sentAt).toLocaleString('fi-FI')}</div><div class="msg-bubble out">${m.content}</div>`).join('')}</div>`:''}
-    <div class="dsec">
-      <div class="dsec-ttl">Siirrä kategoriaan</div>
+    <div class="dsec"><div class="dsec-ttl">Siirrä kategoriaan</div>
       <div class="cat-btns">
         <button class="cat-btn g" onclick="move(${l.id},'hot');closeM('modal-detail')">🟢 Kaupat</button>
         <button class="cat-btn a" onclick="move(${l.id},'warm');closeM('modal-detail')">🟡 Lähellä</button>
         <button class="cat-btn r" onclick="move(${l.id},'cold');closeM('modal-detail')">🔴 Ripuli</button>
       </div>
-    </div>
-  `;
+    </div>`;
   document.getElementById('modal-detail').classList.add('open');
 }
 
-function logMsg(lead, type, content, sent) {
-  msgLog.push({ id:Date.now()+Math.random(), leadId:lead.id, leadName:`${lead.firstname} ${lead.lastname||''}`,
-    phone:lead.phone, type, content, sent, sentAt:new Date().toISOString() });
-  localStorage.setItem('ki-msgs', JSON.stringify(msgLog));
-  document.getElementById('nb-messages').textContent = msgLog.length;
+function logMsg(lead,type,content,sent){
+  msgLog.push({id:Date.now()+Math.random(),leadId:lead.id,leadName:`${lead.firstname} ${lead.lastname||''}`,phone:lead.phone,type,content,sent,sentAt:new Date().toISOString()});
+  localStorage.setItem('ki-msgs',JSON.stringify(msgLog));
+  document.getElementById('nb-messages').textContent=msgLog.length;
 }
 
-function renderMessages() {
-  const el = document.getElementById('msg-log');
-  if(!msgLog.length){ el.innerHTML=`<div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.</div></div>`; return; }
-  el.innerHTML = msgLog.slice().reverse().map(m=>`
+function renderMessages(){
+  const el=document.getElementById('msg-log');
+  if(!msgLog.length){el.innerHTML=`<div class="empty"><div class="empty-ico">✉️</div><div class="empty-txt">Ei viestejä vielä.</div></div>`;return;}
+  el.innerHTML=msgLog.slice().reverse().map(m=>`
     <div class="msg-log-item">
-      <div class="msg-log-head">
-        <div>
-          <div class="msg-log-name">${m.leadName}</div>
-          <span class="msg-type-badge mt-sms">SMS</span>
-          ${m.sent?`<span class="msg-type-badge" style="background:rgba(34,197,94,0.08);color:var(--green);margin-left:4px">✓ Lähetetty</span>`:`<span class="msg-type-badge" style="background:rgba(239,68,68,0.08);color:#f87171;margin-left:4px">Ei lähetetty</span>`}
-        </div>
-        <div class="msg-log-time">${new Date(m.sentAt).toLocaleString('fi-FI')}</div>
-      </div>
+      <div class="msg-log-head"><div><div class="msg-log-name">${m.leadName}</div><span class="msg-type-badge mt-sms">SMS</span>${m.sent?`<span class="msg-type-badge" style="background:rgba(34,197,94,0.08);color:var(--green);margin-left:4px">✓ Lähetetty</span>`:`<span class="msg-type-badge" style="background:rgba(239,68,68,0.08);color:#f87171;margin-left:4px">Ei lähetetty</span>`}</div><div class="msg-log-time">${new Date(m.sentAt).toLocaleString('fi-FI')}</div></div>
       <div class="msg-log-text">${m.content}</div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-async function testWebhook() {
+async function testWebhook(){
   toast('⚡','Lähetetään testiliidi...','');
-  try {
-    const res = await fetch(API('/webhook/meta'), { method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ name:v('t-fn')+' '+v('t-ln'), phone:v('t-ph'), city:v('t-ci'), problem:v('t-pr'), source:'Webhook testi' }) });
-    if (res.ok) { await refreshLeads(); showView('pipeline', document.querySelector('.nav-item')); toast('✅','Testiliidi lisätty!','Tarkista pipeline'); }
-  } catch(e) { toast('❌','Virhe','Tarkista yhteys'); }
+  try{const res=await fetch(API('/webhook/meta'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:v('t-fn')+' '+v('t-ln'),phone:v('t-ph'),city:v('t-ci'),problem:v('t-pr'),source:'Webhook testi'})});
+    if(res.ok){await refreshLeads();showView('pipeline',document.querySelector('.nav-item'));toast('✅','Testiliidi lisätty!','Tarkista pipeline');}}
+  catch(e){toast('❌','Virhe','Tarkista yhteys');}
 }
 
+let editingId=null;
 
-let editingId = null;
-
-function openEdit(id) {
-  const l = leads.find(x=>x.id===id); if(!l) return;
-  editingId = id;
-  document.getElementById('e-fn').value = l.firstname||'';
-  document.getElementById('e-ln').value = l.lastname||'';
-  document.getElementById('e-ph').value = l.phone||'';
-  document.getElementById('e-em').value = l.email||'';
-  document.getElementById('e-ci').value = l.city||'';
-  document.getElementById('e-yr').value = l.year||'';
-  document.getElementById('e-addr').value = l.address||'';
-  document.getElementById('e-hv').value = l.hvac||'';
-  document.getElementById('e-pr').value = l.problem||'';
-  document.getElementById('e-src').value = l.source||'';
+function openEdit(id){
+  const l=leads.find(x=>x.id===id);if(!l)return;
+  editingId=id;
+  document.getElementById('e-fn').value=l.firstname||'';
+  document.getElementById('e-ln').value=l.lastname||'';
+  document.getElementById('e-ph').value=l.phone||'';
+  document.getElementById('e-em').value=l.email||'';
+  document.getElementById('e-ci').value=l.city||'';
+  document.getElementById('e-yr').value=l.year||'';
+  document.getElementById('e-addr').value=l.address||'';
+  document.getElementById('e-hv').value=l.hvac||'';
+  document.getElementById('e-pr').value=l.problem||'';
+  document.getElementById('e-src').value=l.source||'';
+  // Näytä oikea timing-valikko ja esitäytä aiempi arvo
+  const hvacV=l.hvac||'';
+  document.getElementById('e-timing-ilp').style.display=hvacV==='ILP'?'block':'none';
+  document.getElementById('e-timing-puh').style.display=hvacV==='Puhdistus'?'block':'none';
+  document.getElementById('e-install-timing').value=l.install_timing||'';
+  document.getElementById('e-cleaning-timing').value=l.cleaning_timing||'';
   document.getElementById('modal-edit').classList.add('open');
 }
 
-async function saveEdit() {
-  const fn = document.getElementById('e-fn').value.trim();
-  const ph = document.getElementById('e-ph').value.trim();
-  if(!fn||!ph){ toast('⚠️','Täytä pakolliset kentät',''); return; }
-  const updates = {
-    id: editingId,
-    firstname: fn,
-    lastname: document.getElementById('e-ln').value.trim(),
-    phone: ph,
-    email: document.getElementById('e-em').value.trim(),
-    city: document.getElementById('e-ci').value.trim(),
-    year: document.getElementById('e-yr').value.trim(),
-    address: document.getElementById('e-addr').value.trim(),
-    hvac: document.getElementById('e-hv').value,
-    problem: document.getElementById('e-pr').value.trim(),
-    source: document.getElementById('e-src').value.trim(),
+async function saveEdit(){
+  const fn=document.getElementById('e-fn').value.trim();
+  const ph=document.getElementById('e-ph').value.trim();
+  if(!fn||!ph){toast('⚠️','Täytä pakolliset kentät','');return;}
+  const hvacEditVal=document.getElementById('e-hv').value;
+  const installTiming  = hvacEditVal==='ILP'       ? document.getElementById('e-install-timing').value  : '';
+  const cleaningTiming = hvacEditVal==='Puhdistus'  ? document.getElementById('e-cleaning-timing').value : '';
+  const precat=timingToCategory(hvacEditVal,installTiming||cleaningTiming);
+  const lead=leads.find(x=>x.id===editingId)||{};
+  const updates={
+    id:editingId,firstname:fn,lastname:document.getElementById('e-ln').value.trim(),
+    phone:ph,email:document.getElementById('e-em').value.trim(),
+    city:document.getElementById('e-ci').value.trim(),year:document.getElementById('e-yr').value.trim(),
+    address:document.getElementById('e-addr').value.trim(),hvac:hvacEditVal,
+    install_timing:installTiming,cleaning_timing:cleaningTiming,
+    problem:document.getElementById('e-pr').value.trim(),source:document.getElementById('e-src').value.trim(),
+    category:precat?precat.category:(lead.category||'warm'),
+    score:precat?precat.score:(lead.score||5),
   };
-  await fetch(API('/api/leads/update'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(updates) });
-  const idx = leads.findIndex(x=>x.id===editingId);
-  if(idx>-1) leads[idx] = {...leads[idx], ...updates};
-  render();
-  closeM('modal-edit');
-  toast('✅','Tallennettu!','');
-}
-
-function callLead(ph) { window.location.href=`tel:${ph}`; }
-
-async function move(id, cat) {
-  const l=leads.find(x=>x.id===id); if(!l) return;
-  l.category=cat;
-  await fetch(API('/api/leads/update'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id, category:cat}) });
-  render();
+  await fetch(API('/api/leads/update'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(updates)});
+  const idx=leads.findIndex(x=>x.id===editingId);
+  if(idx>-1) leads[idx]={...leads[idx],...updates};
+  render();closeM('modal-edit');
   const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};
-  toast('✅','Siirretty',lb[cat]);
+  toast('✅','Tallennettu!',precat?`→ ${lb[updates.category]}`:'');
 }
 
-async function delLead(id) {
-  if(!confirm('Poistetaanko?')) return;
-  await fetch(API('/api/leads/delete'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id}) });
-  leads=leads.filter(x=>x.id!==id); render();
+function callLead(ph){window.location.href=`tel:${ph}`;}
+
+async function move(id,cat){
+  const l=leads.find(x=>x.id===id);if(!l)return;
+  l.category=cat;
+  await fetch(API('/api/leads/update'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,category:cat})});
+  render();const lb={hot:'🟢 Kaupat',warm:'🟡 Lähellä',cold:'🔴 Ripuli'};toast('✅','Siirretty',lb[cat]);
 }
 
-async function clearAll() {
-  if(!confirm('Poistetaanko kaikki?')) return;
-  for (const l of leads) {
-    await fetch(API('/api/leads/delete'), { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:l.id}) });
-  }
-  leads=[]; render();
+async function delLead(id){
+  if(!confirm('Poistetaanko?'))return;
+  await fetch(API('/api/leads/delete'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+  leads=leads.filter(x=>x.id!==id);render();
 }
 
-function copyUrl() { navigator.clipboard.writeText(document.getElementById('wh-url').textContent); toast('📋','Kopioitu!',''); }
+async function clearAll(){
+  if(!confirm('Poistetaanko kaikki?'))return;
+  for(const l of leads){await fetch(API('/api/leads/delete'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:l.id})});}
+  leads=[];render();
+}
 
-function v(id){ return document.getElementById(id)?.value?.trim()||''; }
-function closeM(id){ document.getElementById(id).classList.remove('open'); }
-function ago(d){
-  const m=Math.floor((Date.now()-new Date(d))/60000);
-  if(m<1) return 'Juuri nyt'; if(m<60) return m+'min sitten';
-  const h=Math.floor(m/60); if(h<24) return h+'h sitten';
-  return Math.floor(h/24)+'pv sitten';
-}
-function toast(ico,ttl,sub){
-  document.getElementById('t-ico').textContent=ico;
-  document.getElementById('t-ttl').textContent=ttl;
-  document.getElementById('t-sub').textContent=sub;
-  const t=document.getElementById('toast'); t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3500);
-}
+function copyUrl(){navigator.clipboard.writeText(document.getElementById('wh-url').textContent);toast('📋','Kopioitu!','');}
+function v(id){return document.getElementById(id)?.value?.trim()||'';}
+function closeM(id){document.getElementById(id).classList.remove('open');}
+function ago(d){const m=Math.floor((Date.now()-new Date(d))/60000);if(m<1)return 'Juuri nyt';if(m<60)return m+'min sitten';const h=Math.floor(m/60);if(h<24)return h+'h sitten';return Math.floor(h/24)+'pv sitten';}
+function toast(ico,ttl,sub){document.getElementById('t-ico').textContent=ico;document.getElementById('t-ttl').textContent=ttl;document.getElementById('t-sub').textContent=sub;const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
 init();
 </script>
