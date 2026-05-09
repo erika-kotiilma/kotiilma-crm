@@ -182,7 +182,7 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
     <button class="nav-item" onclick="showView('messages',this)"><span>&#9993;</span> Viestit<span class="nav-badge" id="nb-messages">0</span></button>
     <hr class="sidebar-divider">
     <div class="sidebar-section">Asetukset</div>
-    <button class="nav-item" onclick="showView('webhook',this)"><span>&#128279;</span> Webhookit</button>
+
     <button class="nav-item" onclick="showView('settings',this)"><span>&#9881;</span> Agentti</button>
     <hr class="sidebar-divider">
     <div style="padding:12px;font-size:11px;color:var(--muted);line-height:1.6"><div style="font-weight:600;color:var(--text);margin-bottom:4px">Soittojärjestys</div>Soita ensin Lähellä-kategorialle.</div>
@@ -208,15 +208,6 @@ header{background:rgba(19,31,48,0.95);backdrop-filter:blur(16px);border-bottom:1
     <div id="view-messages" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Lähetetyt viestit</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px" id="msg-log"><div class="empty"><div class="empty-ico">&#9993;</div><div class="empty-txt">Ei viestäjä vielä.</div></div></div>
-    </div>
-    <div id="view-webhook" style="display:none">
-      <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Webhookit</div>
-      <div class="webhook-card"><div class="webhook-card-ttl">Meta &amp; Google Ads Webhook URL</div><div class="url-box" id="wh-url">Ladataan...</div><button class="copy-btn" onclick="copyUrl()">Kopioi</button></div>
-      <div class="webhook-card"><div class="webhook-card-ttl">Testaa manuaalisesti</div>
-        <div class="fr"><div class="fg"><label class="fl">Etunimi</label><input class="fi" id="t-fn" value="Testiliidi"/></div><div class="fg"><label class="fl">Sukunimi</label><input class="fi" id="t-ln" value="Virtanen"/></div><div class="fg"><label class="fl">Puhelin</label><input class="fi" id="t-ph" value="040 000 0000"/></div><div class="fg"><label class="fl">Postinumero</label><input class="fi" id="t-ci" value="90100"/></div></div>
-        <div class="fg"><label class="fl">Ongelma</label><input class="fi" id="t-pr" value="Tunkkainen ilma"/></div>
-        <button class="btn-p" style="margin-top:4px" onclick="testWebhook()">Lähetä testiliidi</button>
-      </div>
     </div>
     <div id="view-settings" style="display:none">
       <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:20px">Agentti &amp; API-asetukset</div>
@@ -598,7 +589,7 @@ async function refreshLeads() {
 }
 
 function showView(name, el) {
-  ['pipeline','messages','webhook','settings'].forEach(v => {
+  ['pipeline','messages','settings'].forEach(v => {
     document.getElementById('view-'+v).style.display = v===name?'block':'none';
   });
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
